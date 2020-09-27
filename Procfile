@@ -1,1 +1,1 @@
-web: gunicorn lenzcraft.wsgi
+web: python manage.py runserver
