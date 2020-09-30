@@ -62,9 +62,12 @@ var app = new Vue ({
                 },
                 
                 success (data) {
+                    
                     notify('success', data.message);
-                    product.in_cart = !product.in_cart;
-                    if (callback) callbac(product);
+                    
+                    $.extend(product, data.product);
+                    
+                    if (callback) callback(product);
                 },
                 
                 error: generateAlerts
@@ -95,7 +98,7 @@ var app = new Vue ({
         
         removeProduct(product) {
             
-            var  p = this.getProductById(product.id);
+            var p = this.getProductById(product.id);
             
             if (p) {
                 this.products.splice(p, 1);
@@ -114,10 +117,10 @@ var app = new Vue ({
             if (this.productsInCart.length) {
                 var totalCost = this.productsInCart.map(product => product.price * product.qty).reduce((p1, p2) => p1 + p2);
                 // do some formatting here
-                return totalCost;
+                return totalCost.toFixed(2);
             }
             
-            return 0;
+            return 0.00;
         }
     })
 });

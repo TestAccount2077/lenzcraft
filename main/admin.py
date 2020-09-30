@@ -17,7 +17,7 @@ for model in models:
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     
-    list_display = ('name', 'price', 'type', 'model_number', 'brand', 'color', 'frame_type', 'category', 'image_url')
-    list_editable = ('name', 'price', 'type', 'brand', 'color', 'frame_type', 'category', 'image_url')
-    list_filter = ('type', 'brand', 'frame_type', 'category')
+    list_display = ('name', 'price', 'type', 'model_number', 'brand', 'color', 'frame_type', 'category', 'is_featured', 'image_url')
+    list_editable = ('name', 'price', 'type', 'brand', 'color', 'frame_type', 'category', 'is_featured', 'image_url')
+    list_filter = ('type', 'brand', 'frame_type', 'category', 'is_featured')
     list_display_links = ('model_number',)

@@ -245,6 +245,20 @@ Vue.component('add-to-cart-btn', {
     props: ['product'],
     
     template: `<div class="d-none d-xl-block prodcut-add-cart" @click='$root.toggleProductInCart(product)'>
-        <a href="#" class="btn-add-cart lenz-gradient transition-3d-hover"><i class="ec ec-add-to-cart"></i></a>
+        <span class="btn-add-cart lenz-gradient transition-3d-hover pointer">
+            <i class="ec ec-add-to-cart"></i>
+        </span>
+    </div>`
+});
+
+Vue.component('add-to-wishlist-btn', {
+    
+    props: ['product'],
+    
+    template: `<div class="border-top pt-2 flex-center-between flex-wrap" @click='$root.toggleProductInWishlist(product)'>
+        <span class="text-gray-6 font-size-13 pointer">
+            <i class="ec ec-favorites mr-1 font-size-15"></i>
+            Wishlist
+        </span>
     </div>`
 });

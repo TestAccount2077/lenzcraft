@@ -1,8 +1,11 @@
+import locale
+
+locale.setlocale(locale.LC_ALL, '')
 
 
 class BaseProduct(object):
     
-    def as_dict(self, user=None):
+    def as_dict(self, user=None, **kwargs):
         
         data = {
             'id': self.id,
@@ -14,7 +17,7 @@ class BaseProduct(object):
             'price': self.price,
             'formatted_price': self.formatted_price,
             'published': self.published,
-            'is_featured': True,
+            'is_featured': self.is_featured,
             'is_on_sale': True, # self.is_on_sale,
             
             'brand': self.brand,
@@ -57,7 +60,7 @@ class BaseProduct(object):
     @property
     def formatted_price(self):
         
-        return self.price
+        return locale.currency(self.price, grouping=True)
         
     @property
     def is_on_sale(self):
@@ -98,7 +101,7 @@ class BaseCartProduct(object):
         
         if kwargs.get('include_product', False):
             
-            product = self.product.as_dict()
+            product = self.product.as_dict(**kwargs)
             data.update(product)
             
         return data

@@ -9,15 +9,35 @@
     const PRODUCTS = JSON.parse('{{ products|safe|addslashes }}');
     
     var vueData = {
-        products: PRODUCTS,
-        
-        _slide1Type: ''
+        products: PRODUCTS
     };
     
     var vueMethods = {
         
-        updateSlide1Type(newType) {
-            this.slide1Type = newType;
+        getSliderProducts (index) {
+            return this.products.filter(product => product.type === this.firstTwoTypes[index]);
+        },
+        
+        getOneSliderProducts(sliderIndex, startIndex, chunkSize) {
+            
+            var products = this.getSliderProducts(sliderIndex);
+            
+            return products.slice(startIndex, startIndex + chunkSize);
+        },
+        
+        getSliderProductGroups(sliderIndex, chunkSize, iterations=3) {
+            
+            var productGroups = [],
+                index = 0
+                
+            for (var index; index < chunkSize * iterations; index += chunkSize) {
+                
+                var products = this.getOneSliderProducts(0, index, chunkSize);
+                
+                productGroups.push(products);
+            }
+            
+            return productGroups;
         }
     };
     
@@ -27,19 +47,13 @@
             return this.products.filter(product => product.is_featured);
         },
         
-        typesAndProducts () {
+        firstTwoTypes() {
             
-            var types = this.products.map(product => product.type),
-                typesAndProducts = [];
+            var types = new Set(this.products.map(product => product.type));
             
-            types.forEach(type => typesAndProducts.push([type, this.products.filter(product => product.type === type)]));
-            
-            return typesAndProducts;
+            return Array.from(types).slice(0, 2);
         },
         
-        slide1Type () {
-            return this._slide1Type || this.typesAndProducts[0][0];
-        }
     };
     
 </script>
@@ -55,19 +69,19 @@
             <div class="js-slick-carousel u-slick"
                 data-pagi-classes="text-center position-absolute right-0 bottom-0 left-0 u-slick__pagination u-slick__pagination--long justify-content-center mb-3 mb-md-4">
                 <div class="js-slide">
-                    <div class="bg-img-hero" style="background-image: url({% static 'svg/slider/slider_2.jpg' %}); padding: 50px 0;">
+                    <div class="bg-img-hero" style="background-image: url({% static 'svg/slider/slider_1.jpg' %}); padding: 50px 0;">
                         <div class="row pt-7 py-md-0">
                             <div class="d-none d-wd-block offset-1"></div>
                             <div class="col-xl col col-md-6 mt-md-8 mt-lg-10">
                                 <div class="ml-xl-4">
-                                    <h6 class="font-size-15 font-weight-bold mb-2 text-white"
+                                    <!-- <h6 class="font-size-15 font-weight-bold mb-2 lenz-color"
                                         data-scs-animation-in="fadeInUp">
                                         SHOP TO GET WHAT YOU LOVE
-                                    </h6>
-                                    <h1 class="font-size-46 text-lh-50 font-weight-light mb-8 text-white"
+                                    </h6> -->
+                                    <h1 class="font-size-46 text-lh-50 font-weight-light mb-8 lenz-color"
                                         data-scs-animation-in="fadeInUp"
                                         data-scs-animation-delay="200">
-                                        LENSES THAT MAKE A STATEMENT UP TO <strong class="font-weight-bold" style="color: #ef0000;">40% OFF</strong>
+                                        LENSES THAT MAKE A STATEMENT UP TO <strong class="font-weight-bold" style="color: #ef4700;">40% OFF</strong>
                                     </h1>
                                     <a href="shop/single-product-fullwidth.html" class="btn lenz-gradient transition-3d-hover rounded-lg font-weight-normal py-2 px-md-7 px-3 font-size-16"
                                         data-scs-animation-in="fadeInUp"
@@ -85,19 +99,19 @@
                     </div>
                 </div>
                 <div class="js-slide">
-                    <div class="bg-img-hero" style="background-image: url({% static 'svg/slider/slider_4.jpg' %}); padding: 50px 0;">
+                    <div class="bg-img-hero" style="background-image: url({% static 'svg/slider/slider_2.jpg' %}); padding: 50px 0;">
                         <div class="row pt-7 py-md-0">
                             <div class="d-none d-wd-block offset-1"></div>
                             <div class="col-xl col col-md-6 mt-md-8 mt-lg-10">
                                 <div class="ml-xl-4">
-                                    <h6 class="font-size-15 font-weight-bold mb-2 text-white"
+                                    <!-- <h6 class="font-size-15 font-weight-bold mb-2 lenz-color"
                                         data-scs-animation-in="fadeInUp">
                                         SHOP TO GET WHAT YOU LOVE
-                                    </h6>
-                                    <h1 class="font-size-46 text-lh-50 font-weight-light mb-8 text-white"
+                                    </h6> -->
+                                    <h1 class="font-size-46 text-lh-50 font-weight-light mb-8 lenz-color"
                                         data-scs-animation-in="fadeInUp"
                                         data-scs-animation-delay="200">
-                                        LENSES THAT MAKE A STATEMENT UP TO <strong class="font-weight-bold" style="color: #ef0000;">40% OFF</strong>
+                                        LENSES THAT MAKE A STATEMENT UP TO <strong class="font-weight-bold" style="color: #ef4700;">40% OFF</strong>
                                     </h1>
                                     <a href="shop/single-product-fullwidth.html" class="btn lenz-gradient transition-3d-hover rounded-lg font-weight-normal py-2 px-md-7 px-3 font-size-16"
                                         data-scs-animation-in="fadeInUp"
@@ -115,19 +129,19 @@
                     </div>
                 </div>
                 <div class="js-slide">
-                    <div class="bg-img-hero" style="background-image: url({% static 'svg/slider/slider_5.jpg' %}); padding: 50px 0;">
+                    <div class="bg-img-hero" style="background-image: url({% static 'svg/slider/slider_3.jpg' %}); padding: 50px 0;">
                         <div class="row pt-7 py-md-0">
                             <div class="d-none d-wd-block offset-1"></div>
                             <div class="col-xl col col-md-6 mt-md-8 mt-lg-10">
                                 <div class="ml-xl-4">
-                                    <h6 class="font-size-15 font-weight-bold mb-2 text-white"
+                                    <!-- <h6 class="font-size-15 font-weight-bold mb-2 lenz-color"
                                         data-scs-animation-in="fadeInUp">
                                         SHOP TO GET WHAT YOU LOVE
-                                    </h6>
-                                    <h1 class="font-size-46 text-lh-50 font-weight-light mb-8 text-white"
+                                    </h6> -->
+                                    <h1 class="font-size-46 text-lh-50 font-weight-light mb-8 lenz-color"
                                         data-scs-animation-in="fadeInUp"
                                         data-scs-animation-delay="200">
-                                        LENSES THAT MAKE A STATEMENT UP TO <strong class="font-weight-bold" style="color: #ef0000;">40% OFF</strong>
+                                        LENSES THAT MAKE A STATEMENT UP TO <strong class="font-weight-bold" style="color: #ef4700;">40% OFF</strong>
                                     </h1>
                                     <a href="shop/single-product-fullwidth.html" class="btn lenz-gradient transition-3d-hover rounded-lg font-weight-normal py-2 px-md-7 px-3 font-size-16"
                                         data-scs-animation-in="fadeInUp"
@@ -158,7 +172,7 @@
                     </div>
                     <div class="col-6 col-xl-5 col-wd-6 pr-xl-4 pr-wd-3">
                         <div class="mb-2 pb-1 font-size-18 font-weight-light text-ls-n1 text-lh-23">
-                            CATCH BIG <strong style="color: #ef0000;">DEALS</strong> ON THE GLASSES
+                            CATCH BIG <strong style="color: #002aff">DEALS</strong> ON THE GLASSES
                         </div>
                         <div class="link text-gray-70 font-weight-bold font-size-15" href="#">
                             Shop now
@@ -176,7 +190,7 @@
                     </div>
                     <div class="col-6 col-xl-5 col-wd-6 pr-xl-4 pr-wd-3">
                         <div class="mb-2 pb-1 font-size-18 font-weight-light text-ls-n1 text-lh-23">
-                            THE NEW <strong style="color: #ef0000;">EYE GLASSES</strong>
+                            THE NEW <strong style="color: #002aff">EYE GLASSES</strong>
                         </div>
                         <div class="link text-gray-70 font-weight-bold font-size-15" href="#">
                             Shop now
@@ -194,7 +208,7 @@
                     </div>
                     <div class="col-6 col-xl-5 col-wd-6 pr-xl-4 pr-wd-3">
                         <div class="mb-2 pb-1 font-size-18 font-weight-light text-ls-n1 text-lh-23">
-                            CATCH BIG <strong style="color: #ef0000;">DEALS</strong> ON THE GLASSES
+                            CATCH BIG <strong style="color: #002aff">DEALS</strong> ON THE GLASSES
                         </div>
                         <div class="link text-gray-70 font-weight-bold font-size-15" href="#">
                             Shop now
@@ -228,7 +242,7 @@
         <!-- Feature List -->
         <div class="mb-6 row border rounded-lg mx-0 flex-nowrap flex-xl-wrap overflow-auto overflow-xl-visble">
             <!-- Feature List -->
-            <div class="media col px-6 px-xl-4 px-wd-8 flex-shrink-0 flex-xl-shrink-1 min-width-270-all py-3" style="background: #dc2d2d;">
+            <div class="media col px-6 px-xl-4 px-wd-8 flex-shrink-0 flex-xl-shrink-1 min-width-270-all py-3" style="background: #ce3c00;">
                 <div class="u-avatar mr-2">
                     <i class="text-white ec ec-transport font-size-46"></i>
                 </div>
@@ -240,7 +254,7 @@
             <!-- End Feature List -->
 
             <!-- Feature List -->
-            <div class="media col px-6 px-xl-4 px-wd-8 flex-shrink-0 flex-xl-shrink-1 min-width-270-all border-left py-3" style="background: #2d1515;">
+            <div class="media col px-6 px-xl-4 px-wd-8 flex-shrink-0 flex-xl-shrink-1 min-width-270-all border-left py-3" style="background: #071b5f;">
                 <div class="u-avatar mr-2">
                     <i class="text-white ec ec-customers font-size-56"></i>
                 </div>
@@ -252,7 +266,7 @@
             <!-- End Feature List -->
 
             <!-- Feature List -->
-            <div class="media col px-6 px-xl-4 px-wd-8 flex-shrink-0 flex-xl-shrink-1 min-width-270-all border-left py-3" style="background: #dc2d2d;">
+            <div class="media col px-6 px-xl-4 px-wd-8 flex-shrink-0 flex-xl-shrink-1 min-width-270-all border-left py-3" style="background: #ce3c00;">
                 <div class="u-avatar mr-2">
                     <i class="text-white ec ec-returning font-size-46"></i>
                 </div>
@@ -264,7 +278,7 @@
             <!-- End Feature List -->
 
             <!-- Feature List -->
-            <div class="media col px-6 px-xl-4 px-wd-8 flex-shrink-0 flex-xl-shrink-1 min-width-270-all border-left py-3" style="background: #2d1515;">
+            <div class="media col px-6 px-xl-4 px-wd-8 flex-shrink-0 flex-xl-shrink-1 min-width-270-all border-left py-3" style="background: #071b5f;">
                 <div class="u-avatar mr-2">
                     <i class="text-white ec ec-payment font-size-46"></i>
                 </div>
@@ -321,33 +335,31 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade pt-2 show active" id="pills-one-example1" role="tabpanel" aria-labelledby="pills-one-example1-tab" data-target-group="groups">
                     <ul class="row list-unstyled products-group no-gutters">
-                        <li class="col-6 col-md-4 col-xl product-item">
+                        <li class="col-6 col-md-4 col-xl product-item" v-for='product in featuredProducts.slice(0, 6)' :key='product.id'>
                             <div class="product-item__outer h-100 w-100">
                                 <div class="product-item__inner px-xl-4 p-3">
                                     <div class="product-item__body pb-xl-2">
-                                        <div class="mb-2"><a href="shop/product-categories-7-column-full-width.html" class="font-size-12 text-gray-5">Eyeglass</a></div>
-                                        <h5 class="mb-1 product-item__title"><a href="shop/single-product-fullwidth.html" class="text-blue font-weight-bold">John Jacobs Eyeglasses</a></h5>
                                         <div class="mb-2">
-                                            <a href="shop/single-product-fullwidth.html" class="d-block text-center"><img class="img-fluid" src="{% static 'img/212X200/img1.jpg' %}" alt="Image Description"></a>
+                                            <a :href="product.url" class="font-size-12 text-gray-5">[[ product.type ]]</a>
+                                        </div>
+                                        <h5 class="mb-1 product-item__title"><a :href="product.url" class="text-blue font-weight-bold">[[ product.name ]]</a></h5>
+                                        <div class="mb-2">
+                                            <a :href="product.url" class="d-block text-center"><img class="img-fluid" :src="product.image_url" alt="Image Description"></a>
                                         </div>
                                         <div class="flex-center-between mb-1">
                                             <div class="prodcut-price">
-                                                <div class="text-gray-100">685,00</div>
+                                                <div class="text-gray-100">[[ product.formatted_price ]]</div>
                                             </div>
-                                            <div class="d-none d-xl-block prodcut-add-cart">
-                                                <a href="shop/single-product-fullwidth.html" class="btn-add-cart lenz-gradient transition-3d-hover"><i class="ec ec-add-to-cart"></i></a>
-                                            </div>
+                                            <add-to-cart-btn :product='product'></add-to-cart-btn>
                                         </div>
                                     </div>
                                     <div class="product-item__footer">
-                                        <div class="border-top pt-2 flex-center-between flex-wrap">
-                                            <a href="shop/wishlist.html" class="text-gray-6 font-size-13"><i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist</a>
-                                        </div>
+                                        <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="col-6 col-md-4 col-xl product-item">
+                        <!-- <li class="col-6 col-md-4 col-xl product-item">
                             <div class="product-item__outer h-100 w-100">
                                 <div class="product-item__inner px-xl-4 p-3">
                                     <div class="product-item__body pb-xl-2">
@@ -478,7 +490,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
                 <div class="tab-pane fade pt-2" id="pills-two-example1" role="tabpanel" aria-labelledby="pills-two-example1-tab" data-target-group="groups">
@@ -817,16 +829,16 @@
                 </div>
                 <div class="col-12 col-lg-8 col-xl-7 col-wd-6 pt-6 pt-md-0">
                     <div class=" d-flex border-bottom border-color-1 mr-md-2">
-                        <h3 class="section-title section-title__full mb-0 pb-2 font-size-22">[[ slide1Type ]]</h3>
+                        <h3 class="section-title section-title__full mb-0 pb-2 font-size-22">[[ firstTwoTypes[0] ]]</h3>
                     </div>
                     <div class="js-slick-carousel position-static u-slick u-slick--gutters-2 u-slick overflow-hidden u-slick-overflow-visble py-5"
                         data-arrows-classes="position-absolute top-0 font-size-17 u-slick__arrow-normal top-10 pt-6 pt-md-0"
                         data-arrow-left-classes="fa fa-angle-left right-2"
                         data-arrow-right-classes="fa fa-angle-right right-1"
                         data-pagi-classes="text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4 carousel-2">
-                        <div class="js-slide" v-for='typeAndProducts in typesAndProducts' :key='typeAndProducts[0]' :data-type='typeAndProducts[0]'>
+                        <div class="js-slide" v-for='(productGroup, index) in getSliderProductGroups(0, 4)' :key='index'>
                             <ul class="row list-unstyled products-group no-gutters mb-0 overflow-visible">
-                                <home-product v-for='product in typeAndProducts[1]' :key='product.id' :product='product'></home-product>
+                                <home-product v-for='product in productGroup' :key='product.id' :product='product'></home-product>
                                 <!-- <li class="col-md-6 product-item product-item__card mb-2 remove-divider pr-md-2 border-bottom-0">
                                     <div class="product-item__outer h-100 w-100">
                                         <div class="product-item__inner p-md-3 row no-gutters bg-white max-width-334">
@@ -1209,44 +1221,58 @@
         <!-- Laptops & Computers -->
         <div class="mb-6 position-relative">
             <div class="d-flex justify-content-between border-bottom border-color-1 flex-md-nowrap flex-wrap border-sm-bottom-0">
-                <h3 class="section-title section-title__full mb-0 pb-2 font-size-22">Sunglasses</h3>
+                <h3 class="section-title section-title__full mb-0 pb-2 font-size-22">[[ firstTwoTypes[1] ]]</h3>
             </div>
+            
+            
+            
+            <!-- <div class="js-slide" v-for='(productGroup, index) in getSliderProductGroups(1, 6)' :key='index'>
+                <ul class="row list-unstyled products-group no-gutters mb-0 overflow-visible">
+                    <home-product v-for='product in productGroup' :key='product.id' :product='product'></home-product> -->
+            
+            
+            
+            
+            
             <div class="js-slick-carousel position-static u-slick u-slick--gutters-1 overflow-hidden u-slick-overflow-visble pt-3 pb-3"
                 data-arrows-classes="position-absolute top-0 font-size-17 u-slick__arrow-normal top-10"
                 data-arrow-left-classes="fa fa-angle-left right-1"
                 data-arrow-right-classes="fa fa-angle-right right-0"
                 data-pagi-classes="text-center right-0 bottom-1 left-0 u-slick__pagination u-slick__pagination--long mb-0 z-index-n1 mt-4">
-                <div class="js-slide">
+                <div class="js-slide" v-for='(productGroup, index) in getSliderProductGroups(1, 6)' :key='index'>
                     <ul class="row list-unstyled products-group no-gutters mb-0 overflow-visible">
-                        <li class="col-md-4 product-item product-item__card pb-2 mb-2 pb-md-0 mb-md-0 border-bottom border-md-bottom-0">
+                        <!-- <home-product v-for='product in productGroup' :key='product.id' :product='product'></home-product> -->
+                        <li class="col-md-4 product-item product-item__card pb-2 mb-2 pb-md-0 mb-md-0 border-bottom border-md-bottom-0" v-for='product in productGroup' :key='product.id'>
                             <div class="product-item__outer h-100 w-100">
                                 <div class="product-item__inner p-md-3 row no-gutters">
                                     <div class="col col-lg-auto col-xl-5 col-wd-auto product-media-left">
-                                        <a href="shop/single-product-fullwidth.html" class="max-width-150 d-block"><img class="img-fluid" src="{% static 'img/212X200/img1.jpg' %}" alt="Image Description"></a>
+                                        <a :href="product.url" class="max-width-150 d-block">
+                                            <img class="img-fluid" :src="product.image_url" alt="Image Description">
+                                        </a>
                                     </div>
                                     <div class="col col-xl-7 col-wd product-item__body pl-2 pl-lg-3 pl-xl-0 pl-wd-3 mr-wd-1">
                                         <div class="mb-4 mb-xl-2 mb-wd-6">
-                                            <div class="mb-2"><a href="shop/product-categories-7-column-full-width.html" class="font-size-12 text-gray-5">Eyeglass</a></div>
-                                            <h5 class="product-item__title"><a href="shop/single-product-fullwidth.html" class="text-blue font-weight-bold">Eyeglasses</a></h5>
+                                            <div class="mb-2">
+                                                <a :href="product.url" class="font-size-12 text-gray-5">[[ product.type ]]</a>
+                                            </div>
+                                            <h5 class="product-item__title">
+                                                <a :href="product.url" class="text-blue font-weight-bold">[[ product.name ]]</a>
+                                            </h5>
                                         </div>
                                         <div class="flex-center-between mb-3">
                                             <div class="prodcut-price">
-                                                <div class="text-gray-100">629,00</div>
+                                                <div class="text-gray-100">[[ product.formatted_price ]]</div>
                                             </div>
-                                            <div class="d-none d-xl-block prodcut-add-cart">
-                                                <a href="shop/single-product-fullwidth.html" class="btn-add-cart lenz-gradient transition-3d-hover"><i class="ec ec-add-to-cart"></i></a>
-                                            </div>
+                                            <add-to-cart-btn :product='product'></add-to-cart-btn>
                                         </div>
                                         <div class="product-item__footer">
-                                            <div class="border-top pt-2 flex-center-between flex-wrap">
-                                                <a href="shop/wishlist.html" class="text-gray-6 font-size-13"><i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist</a>
-                                            </div>
+                                            <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="col-md-4 product-item product-item__card pb-2 mb-2 pb-md-0 mb-md-0 border-bottom border-md-bottom-0">
+                        <!-- <li class="col-md-4 product-item product-item__card pb-2 mb-2 pb-md-0 mb-md-0 border-bottom border-md-bottom-0">
                             <div class="product-item__outer h-100 w-100">
                                 <div class="product-item__inner p-md-3 row no-gutters">
                                     <div class="col col-lg-auto col-xl-5 col-wd-auto product-media-left">
@@ -1385,10 +1411,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
-                <div class="js-slide">
+                <!-- <div class="js-slide">
                     <ul class="row list-unstyled products-group no-gutters mb-0 overflow-visible">
                         <li class="col-md-4 product-item product-item__card pb-2 mb-2 pb-md-0 mb-md-0 border-bottom border-md-bottom-0">
                             <div class="product-item__outer h-100 w-100">
@@ -1731,7 +1757,7 @@
                             </div>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- End Laptops & Computers -->

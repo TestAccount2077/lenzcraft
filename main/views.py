@@ -30,7 +30,6 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
         
         return Response(context, template_name='home.html')
         
-    
     def men_view(self, request, *args, **kwargs):
         
         context = {
@@ -71,6 +70,9 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             user = request.user
             data = request.POST
             
+            if not user.is_authenticated:
+                return self._400('You must log in to add products to your cart. Log in and try again')
+            
             product = Product.objects.filter(id=data['productId']).first()
             
             if not product:
@@ -87,12 +89,18 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             if qty == 0 or (cart_product and qty is None):
                 cart_product.delete()
                 message = 'Product removed from cart'
+                product = product.as_dict(user=user)
                 
             else:
-                cart.cart_products.create(product=product, qty=qty or 1)
+                print(qty)
+                product = cart.cart_products.create(product=product, qty=qty or 1)
                 message = 'Product added to cart'
-        
-            return JsonResponse({'message': message})
+                product = product.as_dict(user=user, include_product=True)
+                
+            return JsonResponse({
+                'message': message,
+                'product': product
+            })
             
         return Response({}, template_name='index.html')
     
@@ -120,7 +128,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
         
         context = {
             'products': json.dumps([
-                product.as_dict(include_product=True) for product in user.cart.cart_products.all()
+                product.as_dict(user=user, include_product=True) for product in user.cart.cart_products.all()
             ])
         }
         
@@ -134,6 +142,9 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             data = request.POST
             
             product = Product.objects.filter(id=data['productId']).first()
+            
+            if not user.is_authenticated:
+                return self._400('You must log in to add products to your wishlist. Log in and try again')
             
             if not product:
                 return JsonResponse({'error': 'Product not found'}, status=404)
