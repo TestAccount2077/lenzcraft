@@ -24,7 +24,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = '1&#q@(l%qw%%hsh(cbq4%ob#x$rn3fhi3llb0o=ka@m7wfj39&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -134,28 +134,28 @@ STATICFILES_DIRS = [
 ]
 
 
-if DEBUG:
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_URL = '/static/'
 
-    # Static files (CSS, JavaScript, Images)
-    # https://docs.djangoproject.com/en/1.11/howto/static-files/
-    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-    STATIC_URL = '/static/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+# MEDIA_URL = '/%s/' % MEDIAFILES_LOCATION
 
-    # MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
-    # MEDIA_URL = '/%s/' % MEDIAFILES_LOCATION
-
-    PROTOCOL = 'http'
-
-# Used for static and media file storage in production
-else:
+# if DEBUG:
+#
+#     PROTOCOL = 'http'
+#
+# # Used for static and media file storage in production
+# else:
     
-    import dj_database_url
+import dj_database_url
 
-    DATABASES['default'] = dj_database_url.config()
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+DATABASES['default'] = dj_database_url.config()
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
-    PROTOCOL = 'https'
+PROTOCOL = 'https'
