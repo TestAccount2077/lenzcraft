@@ -5,7 +5,10 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework import status
 
+from .utils import enable_traceback
 
+
+@method_decorator(enable_traceback, name='dispatch')
 class CreateListRetrieveUpdateViewSet(mixins.CreateModelMixin,
       mixins.ListModelMixin,
       mixins.RetrieveModelMixin,
