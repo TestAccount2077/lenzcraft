@@ -53,6 +53,18 @@ place_order = MainViewSet.as_view({
     'post': 'place_order'
 })
 
+faq = MainViewSet.as_view({
+    'get': 'faq'
+})
+
+about_us = MainViewSet.as_view({
+    'get': 'about_us'
+})
+
+contact_us = MainViewSet.as_view({
+    'get': 'contact_us'
+})
+
 urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^men/$', men_view, name='men'),
@@ -61,6 +73,11 @@ urlpatterns = [
     url(r'^wishlist/$', wishlist),
     url(r'^checkout/$', checkout),
     url(r'^cart/$', cart),
+    
+    url(r'^about-us/$', about_us),
+    url(r'^faq/$', faq),
+    url(r'^contact-us/$', contact_us),
+    
     url(r'^products/(?P<pk>\d+)/$', product_detail, name='product_detail'),
     
     url(r'ajax/add-to-cart/$', add_to_cart),

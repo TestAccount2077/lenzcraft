@@ -4,7 +4,8 @@ var app = new Vue ({
     delimiters: ['[[', ']]'],
     
     data: $.extend(window.vueData || {}, {
-        productSearch: ''
+        productSearch: '',
+        products: window.PRODUCTS || []
     }),
     
     methods: $.extend(window.vueMethods || {}, {

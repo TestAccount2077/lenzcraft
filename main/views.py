@@ -194,20 +194,17 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             print(response, successful)
             
             return JsonResponse({})
-    #
-    #
-    # def home(self, request, *args, **kwargs):
-    #
-    #     return Response({}, template_name='index.html')
-    #
-    #
-    # def home(self, request, *args, **kwargs):
-    #
-    #     return Response({}, template_name='index.html')
-    #
-    #
-    # def home(self, request, *args, **kwargs):
-    #
-    #     return Response({}, template_name='index.html')
+    
+    def faq(self, request, *args, **kwargs):
+    
+        return Response({}, template_name='faq.html')
+    
+    def about_us(self, request, *args, **kwargs):
+    
+        return Response({}, template_name='about.html')
+    
+    def contact_us(self, request, *args, **kwargs):
+    
+        return Response({}, template_name='contact.html')
         
     
