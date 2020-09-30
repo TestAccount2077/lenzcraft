@@ -1,1 +1,1 @@
-web: gunicorn lenzcraft.wsgi
+web: gunicorn lenzcraft.wsgi --log-file -
