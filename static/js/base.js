@@ -50,7 +50,7 @@ var app = new Vue ({
             });
         },
         
-        toggleProductInCart(product) {
+        toggleProductInCart(product, callback) {
             
             $.ajax({
                 
@@ -64,6 +64,7 @@ var app = new Vue ({
                 success (data) {
                     notify('success', data.message);
                     product.in_cart = !product.in_cart;
+                    if (callback) callbac(product);
                 },
                 
                 error: generateAlerts

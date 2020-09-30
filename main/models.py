@@ -18,6 +18,17 @@ class Product(BaseProduct, TimeStampedModel):
         ('KD', 'Kids')
     )
     
+    FRAME_TYPES = (
+        ('RA', 'Rectangle Frames'),
+        ('RN', 'Round Frames'),
+        ('SQ', 'Square Frames'),
+        ('RM', 'Rimless Frames')
+    )
+    
+    REVERSED_CATEGORIES = {
+        category[1]: category[0] for category in CATEGORIES
+    }
+    
     name = models.CharField(max_length=300, default='')
     type = models.CharField(max_length=3, choices=TYPES, default='', blank=True)
     category = models.CharField(max_length=3, choices=CATEGORIES, default='', blank=True)
@@ -25,7 +36,7 @@ class Product(BaseProduct, TimeStampedModel):
     model_number = models.CharField(max_length=300, default='', blank=True)
     brand = models.CharField(max_length=200, default='', blank=True)
     color = models.CharField(max_length=100, default='', blank=True)
-    frame_type = models.CharField(max_length=300, default='', blank=True)
+    frame_type = models.CharField(max_length=2, choices=FRAME_TYPES, default='', blank=True)
     lens_size = models.PositiveIntegerField(default=0, blank=True)
     
     available_qty = models.PositiveIntegerField('Available quantity', default=0, blank=True)

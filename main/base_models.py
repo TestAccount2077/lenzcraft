@@ -19,7 +19,7 @@ class BaseProduct(object):
             
             'brand': self.brand,
             'color': self.color,
-            'frame_type': self.frame_type,
+            'frame_type': self.get_frame_type_display(),
             
             'created_timestamp': self.created.timestamp(),
             'total_rating': self.total_rating,
@@ -27,11 +27,13 @@ class BaseProduct(object):
             'url': f'/products/{ self.id }/',
             'available_qty': self.available_qty,
             'in_stock': self.in_stock,
-            'in_stock_label': self.in_stock_label
+            'in_stock_label': self.in_stock_label,
+            'qty': 0,
+            'total_cost': 0
         }
         
         if user and user.is_authenticated:
-            print(user.cart.cart_products.filter(product=self).exists())
+
             data.update({
                 'in_cart': user.cart.cart_products.filter(product=self).exists(),
                 'in_wishlist': user.wishlist.products.filter(id=self.id).exists()
@@ -49,7 +51,7 @@ class BaseProduct(object):
                 'in_cart': False,
                 'in_wishlist': False
             })
-        print(data)
+            
         return data
     
     @property

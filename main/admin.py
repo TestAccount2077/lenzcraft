@@ -6,7 +6,8 @@ from .models import *
 models = (
     # Product,
     Wishlist,
-    Cart
+    Cart,
+    CartProduct
 )
 
 for model in models:

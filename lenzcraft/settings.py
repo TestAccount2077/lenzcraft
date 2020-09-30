@@ -24,7 +24,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = '1&#q@(l%qw%%hsh(cbq4%ob#x$rn3fhi3llb0o=ka@m7wfj39&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -142,20 +142,20 @@ STATIC_URL = '/static/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
 # MEDIA_URL = '/%s/' % MEDIAFILES_LOCATION
 
-# if DEBUG:
-#
-#     PROTOCOL = 'http'
-#
-# # Used for static and media file storage in production
-# else:
+if DEBUG:
     
-import dj_database_url
+    PROTOCOL = 'http'
 
-DATABASES['default'] = dj_database_url.config()
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Used for static and media file storage in production
+else:
+    
+    import dj_database_url
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+    DATABASES['default'] = dj_database_url.config()
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-PROTOCOL = 'https'
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    PROTOCOL = 'https'

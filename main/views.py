@@ -88,7 +88,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
                 message = 'Product removed from cart'
                 
             else:
-                cart.cart_products.create(product=product, qty=qty)
+                cart.cart_products.create(product=product, qty=qty or 1)
                 message = 'Product added to cart'
         
             return JsonResponse({'message': message})
@@ -115,7 +115,9 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
         user = request.user
         
         context = {
-            'products': get_available_products(user)
+            'products': json.dumps([
+                product.as_dict(include_product=True) for product in user.cart.cart_products.all()
+            ])
         }
         
         return Response(context, template_name='cart.html')

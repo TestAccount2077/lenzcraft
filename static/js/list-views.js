@@ -4,6 +4,7 @@ var vueData = {
     products: PRODUCTS,
     
     productSearch: '',
+    pageNum: 1,
     
     filters: {
         brands: [],
@@ -16,6 +17,19 @@ var vueData = {
 
 var vueMethods = {
     
+    updatePageNum(action) {
+        
+        var pageNum = this.pageNum;
+        
+        if (action === 'increment' && pageNum + 1 <= this.pageCount) {
+            this.pageNum++;
+        }
+        
+        if (action === 'decrement' && pageNum - 1 > 0) {
+            this.pageNum--;
+        }
+        
+    }
 };
 
 var vueComputed = {
@@ -24,7 +38,12 @@ var vueComputed = {
         
         var filters = this.filters;
         
-        var products = this.products.filter(product => {
+        var start = this.startIndex,
+            end = start + 25;
+        
+        var products = this.products.slice(start, end);
+        
+        var products = products.filter(product => {
             return (
                 (!filters.brands.length || filters.brands.includes(product.brand)) &&
                 (!filters.colors.length || filters.colors.includes(product.color)) &&
@@ -55,7 +74,6 @@ var vueComputed = {
         }
         
         return products;
-        
     },
     
     brands () {
@@ -69,5 +87,25 @@ var vueComputed = {
     frameTypes () {
         return this.getFilterData('frame_type');
     },
+    
+    startIndex() {
+        return (this.pageNum - 1) * 25;
+    },
+    
+    readableStartIndex() {
+        return this.startIndex + 1;
+    },
+    
+    endIndex() {
+        
+        var endIndex = this.startIndex + 25;
+        
+        if (endIndex > this.products.length) return this.products.length;
+        return endIndex;
+    },
+    
+    pageCount() {
+        return Math.ceil(this.products.length / 25);
+    }
     
 };
