@@ -141,21 +141,24 @@ STATIC_URL = '/static/'
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
 # MEDIA_URL = '/%s/' % MEDIAFILES_LOCATION
+ 
+DEBUG = True
 
-if DEBUG:
+# if DEBUG:
+#
+#     PROTOCOL = 'http'
+#
+# # Used for static and media file storage in production
+# else:
     
-    PROTOCOL = 'http'
+import dj_database_url
+# os.environ['DATABASE_URL'] = 'postgres://dzjjugufmkgjpl:cd340f389ca0dcd0115a17a34bb7fce2ed0b223444d4c90b252eb207d14a3878@ec2-54-80-184-43.compute-1.amazonaws.com:5432/dalg277aoifed1'
 
-# Used for static and media file storage in production
-else:
-    
-    import dj_database_url
+DATABASES['default'] = dj_database_url.config()
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    DATABASES['default'] = dj_database_url.config()
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-
-    PROTOCOL = 'https'
+PROTOCOL = 'https'

@@ -54,7 +54,7 @@ place_order = MainViewSet.as_view({
 })
 
 urlpatterns = [
-    url(r'^$', home),
+    url(r'^$', home, name='home'),
     url(r'^men/$', men_view, name='men'),
     url(r'^women/$', women_view, name='women'),
     url(r'^kids/$', kids_view),

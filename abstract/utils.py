@@ -25,7 +25,7 @@ def enable_traceback(original_function):
             
             type_ = sys.exc_info()[0].__name__
             tb = traceback.format_exc()
-            
+            print(tb)
             logger.error(f'Type: { type_ }, Details: { tb }')
             traceback.print_exc()
     

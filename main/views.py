@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.shortcuts import redirect
 
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -113,6 +114,9 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
     def cart(self, request, *args, **kwargs):
         
         user = request.user
+        
+        if not user.is_authenticated:
+            return redirect('main:home')
         
         context = {
             'products': json.dumps([
