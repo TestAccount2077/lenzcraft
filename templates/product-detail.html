@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}{{ product.name }}{% endblock %}
+
 {% block js %}
 <script type="text/javascript">
     
+    var PRODUCTS = [];
+    
     var vueData = {
-        product: JSON.parse('{{ product|safe|addslashes }}')
+        product: JSON.parse('{{ json_product|safe|addslashes }}')
     };
     
 </script>
@@ -103,7 +107,10 @@
                                 </div>
                             </div>
                             <div class="flex-horizontal-center flex-wrap mb-4">
-                                <a href="#" class="text-gray-6 font-size-13 mr-2"><i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist</a>
+                                <span class="text-gray-6 font-size-13 mr-2 pointer" @click='toggleProductInWishlist(product)'>
+                                    <i class="ec ec-favorites mr-1 font-size-15"></i>
+                                    Wishlist
+                                </span>
                             </div>
                             <div class="mb-2">
                                 <ul class="font-size-14 pl-3 ml-1 text-gray-110">
@@ -117,7 +124,7 @@
                             <p><strong>SKU</strong>: FW511948218</p>
                             <div class="mb-4">
                                 <div class="d-flex align-items-baseline">
-                                    <ins class="font-size-36 text-decoration-none">[[ product.price ]]</ins>
+                                    <ins class="font-size-36 text-decoration-none">[[ product.formatted_price ]]</ins>
                                     <del class="font-size-20 ml-2 text-gray-6">2,299.00</del>
                                 </div>
                             </div>

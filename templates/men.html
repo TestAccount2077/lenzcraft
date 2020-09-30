@@ -26,30 +26,8 @@
                     </nav>
                 </div>
                 <!-- End breadcrumb -->
-                <div class="mb-8 border border-width-2 border-color-3 borders-radius-6">
-                    <!-- List -->
-                    <ul id="sidebarNav" class="list-unstyled mb-0 sidebar-navbar">
-                        <li>
-                            <a class="dropdown-toggle dropdown-toggle-collapse dropdown-title" href="javascript:;" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="sidebarNav1Collapse" data-target="#sidebarNav1Collapse">
-                                Show All Categories
-                            </a>
-
-                            <div id="sidebarNav1Collapse" class="collapse" data-parent="#sidebarNav">
-                                <ul id="sidebarNav1" class="list-unstyled dropdown-list">
-                                    <!-- Menu List -->
-                                    <li><a class="dropdown-item" href="/men/">MEN<span class="text-gray-25 font-size-12 font-weight-normal"> </span></a></li>
-                                    <li><a class="dropdown-item" href="/women/">WOMEN<span class="text-gray-25 font-size-12 font-weight-normal"> </span></a></li>
-                                    <li><a class="dropdown-item" href="/kids/">KIDS<span class="text-gray-25 font-size-12 font-weight-normal"> </span></a></li>
-                                    
-                                    <!-- End Menu List -->
-                                </ul>
-                            </div>
-                        </li>
-                        
-                    </ul>
-                    <!-- End List -->
-                </div>
                 
+                {% include 'abstract/list-views/sidebar-categories.html' %}
                 {% include 'abstract/list-views/filters.html' %}
                 
                 <div class="mb-8">
@@ -64,109 +42,16 @@
                     <img src="{% static 'svg/top_img/men.jpg' %}" alt="main-img">
                     <h3 class="font-size-25 mb-2 mb-md-0">Eyeglasses for Men</h3>
                 </div>
-                <!-- Shop-control-bar Title -->
-                <div class="d-block d-md-flex flex-center-between">
-                    <p class="font-size-14 text-black-90 mb-0">Showing [[ readableStartIndex ]]–[[ endIndex ]] of [[ products.length ]] results</p>
-                </div>
-                <!-- End shop-control-bar Title -->
-                <!-- Shop-control-bar -->
-                <div class="bg-gray-1 flex-center-between borders-radius-9 py-1">
-                    <div class="d-xl-none">
-                        <!-- Account Sidebar Toggle Button -->
-                        <a id="sidebarNavToggler1" class="btn btn-sm py-1 font-weight-normal" href="javascript:;" role="button"
-                            aria-controls="sidebarContent1"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                            data-unfold-event="click"
-                            data-unfold-hide-on-scroll="false"
-                            data-unfold-target="#sidebarContent1"
-                            data-unfold-type="css-animation"
-                            data-unfold-animation-in="fadeInLeft"
-                            data-unfold-animation-out="fadeOutLeft"
-                            data-unfold-duration="500">
-                            <i class="fas fa-sliders-h"></i> <span class="ml-1">Filters</span>
-                        </a>
-                        <!-- End Account Sidebar Toggle Button -->
-                    </div>
-                    <div class="px-3 d-none d-xl-block">
-                        <ul class="nav nav-tab-shop" id="pills-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="pills-one-example1-tab" data-toggle="pill" href="#pills-one-example1" role="tab" aria-controls="pills-one-example1" aria-selected="false">
-                                    <div class="d-md-flex justify-content-md-center align-items-md-center">
-                                        <i class="fa fa-th"></i>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-two-example1-tab" data-toggle="pill" href="#pills-two-example1" role="tab" aria-controls="pills-two-example1" aria-selected="false">
-                                    <div class="d-md-flex justify-content-md-center align-items-md-center">
-                                        <i class="fa fa-align-justify"></i>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-three-example1-tab" data-toggle="pill" href="#pills-three-example1" role="tab" aria-controls="pills-three-example1" aria-selected="true">
-                                    <div class="d-md-flex justify-content-md-center align-items-md-center">
-                                        <i class="fa fa-list"></i>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-four-example1-tab" data-toggle="pill" href="#pills-four-example1" role="tab" aria-controls="pills-four-example1" aria-selected="true">
-                                    <div class="d-md-flex justify-content-md-center align-items-md-center">
-                                        <i class="fa fa-th-list"></i>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="d-flex">
-                        <form method="get">
-                            <!-- Select -->
-                            <select class="js-select selectpicker dropdown-select max-width-200 max-width-160-sm right-dropdown-0 px-2 px-xl-0"
-                                data-style="btn-sm bg-white font-weight-normal py-2 border text-gray-20 bg-lg-down-transparent border-lg-down-0" v-model='ordering'>
-                                <option value="default" selected>Default sorting</option>
-                                <option value="latest">Sort by latest</option>
-                                <option value="price ascending">Sort by price: low to high</option>
-                                <option value="price descending">Sort by price: high to low</option>
-                            </select>
-                            <!-- End Select -->
-                        </form>
-                        <form method="POST" class="ml-2 d-none d-xl-block">
-                            <!-- Select -->
-                            <select class="js-select selectpicker dropdown-select max-width-120"
-                                data-style="btn-sm bg-white font-weight-normal py-2 border text-gray-20 bg-lg-down-transparent border-lg-down-0">
-                                <option value="one" selected>Lens Size</option>
-                                <option value="two">Upto 50MM</option>
-                                <option value="three">From 51 to 54MM</option>
-                            </select>
-                            <!-- End Select -->
-                        </form>
-                    </div>
-                    <nav class="px-3 flex-horizontal-center text-gray-20 d-none d-xl-flex">
-                        <form method="post" class="min-width-50 mr-1">
-                            <input size="2" min="1" :max="pageCount" step="1" type="number" class="form-control text-center px-2 height-35" value="1" v-model='pageNum'>
-                        </form> of [[ pageCount ]]
-                        <a class="text-gray-30 font-size-20 ml-2" href="#" @click='updatePageNum("increment")'>→</a>
-                    </nav>
-                </div>
-                <!-- End Shop-control-bar -->
+                
+                {% include 'abstract/list-views/subnav.html' %}
+                
                 <!-- Shop Body -->
                 <!-- Tab Content -->
                 {% include 'abstract/list-views/main-content.html' %}
                 <!-- End Tab Content -->
                 <!-- End Shop Body -->
                 <!-- Shop Pagination -->
-                <nav class="d-md-flex justify-content-between align-items-center border-top pt-3" aria-label="Page navigation example">
-                    <div class="text-center text-md-left mb-3 mb-md-0">Showing [[ readableStartIndex ]]–[[ endIndex ]] of [[ products.length ]] results</div>
-                    <ul class="pagination mb-0 pagination-shop justify-content-center justify-content-md-start">
-                        <li v-for='num in pageCount' :key='num' class="page-item page-link" :class="{'current': num == pageNum}" @click='pageNum = num'>
-                            [[ num ]]
-                        </li>
-                        <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li> -->
-                    </ul>
-                </nav>
+                {% include 'abstract/list-views/lower-nav.html' %}
                 <!-- End Shop Pagination -->
             </div>
         </div>

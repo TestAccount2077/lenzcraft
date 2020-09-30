@@ -70,7 +70,8 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             return Response({}, template='404.html')
         
         context = {
-            'product': json.dumps(product.as_dict(user))
+            'product': product,
+            'json_product': json.dumps(product.as_dict(request.user))
         }
         
         return Response(context, template_name='product-detail.html')

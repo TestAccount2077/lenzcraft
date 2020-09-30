@@ -1,0 +1,10 @@
+<nav class="d-md-flex justify-content-between align-items-center border-top pt-3" aria-label="Page navigation example">
+    <div class="text-center text-md-left mb-3 mb-md-0">Showing [[ readableStartIndex ]]–[[ endIndex ]] of [[ products.length ]] results</div>
+    <ul class="pagination mb-0 pagination-shop justify-content-center justify-content-md-start">
+        <li v-for='num in pageCount' :key='num' class="page-item page-link" :class="{'current': num == pageNum}" @click='pageNum = num'>
+            [[ num ]]
+        </li>
+        <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+    </ul>
+</nav>
