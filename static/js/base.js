@@ -5,7 +5,7 @@ var app = new Vue ({
     
     data: $.extend(window.vueData || {}, {
         productSearch: '',
-        products: window.PRODUCTS || []
+        products: PRODUCTS
     }),
     
     methods: $.extend(window.vueMethods || {}, {

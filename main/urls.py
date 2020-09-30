@@ -21,6 +21,10 @@ kids_view = MainViewSet.as_view({
     'get': 'kids_view'
 })
 
+sunglasses_view = MainViewSet.as_view({
+    'get': 'sunglasses_view'
+})
+
 product_detail = MainViewSet.as_view({
     'get': 'product_detail'
 })
@@ -70,6 +74,7 @@ urlpatterns = [
     url(r'^men/$', men_view, name='men'),
     url(r'^women/$', women_view, name='women'),
     url(r'^kids/$', kids_view),
+    url(r'^sunglasses/$', sunglasses_view),
     url(r'^wishlist/$', wishlist),
     url(r'^checkout/$', checkout),
     url(r'^cart/$', cart),

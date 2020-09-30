@@ -872,7 +872,11 @@
         
         <script src="{% static 'js/iziToast.min.js' %}?v=0.0.1"></script>
         
-        {% block js %}{% endblock %}
+        {% block js %}
+            <script type='text/javascript'>
+                var PRODUCTS = [];
+            </script>
+        {% endblock %}
         
         <script type="text/javascript" src='{% static "js/base.js" %}'></script>
         

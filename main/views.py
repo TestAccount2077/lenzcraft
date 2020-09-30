@@ -41,14 +41,26 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
     def women_view(self, request, *args, **kwargs):
          
         context = {
-            'products': get_available_products(request.user, filter_kwargs=dict(category='MN'))
+            'products': get_available_products(request.user, filter_kwargs=dict(category='WM'))
         }
         
         return Response(context, template_name='women.html')
     
     def kids_view(self, request, *args, **kwargs):
+        
+        context = {
+           'products': get_available_products(request.user, filter_kwargs=dict(category='KD'))
+        }
+       
+        return Response(context, template_name='kids.html')
     
-        return Response({}, template_name='kids.html')
+    def sunglasses_view(self, request, *args, **kwargs):
+        
+        context = {
+           'products': get_available_products(request.user, filter_kwargs=dict(type='SG'))
+        }
+       
+        return Response(context, template_name='sunglasses.html')
     
     def product_detail(self, request, pk, *args, **kwargs):
         
