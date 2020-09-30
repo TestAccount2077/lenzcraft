@@ -9,18 +9,18 @@ from main.models import *
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, username, password=None, *args, **kwargs):
+    def create_user(self, email, password=None, *args, **kwargs):
         
-        user = self.model(email=username)
+        user = self.model(email=email)
 
         user.set_password(password)
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, username, password, *args, **kwargs):
+    def create_superuser(self, email, password, *args, **kwargs):
 
-        user = self.create_user(username, password=password)
+        user = self.create_user(email, password=password)
 
         user.is_admin = True
         user.is_staff = True
