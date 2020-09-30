@@ -32,7 +32,7 @@
                 
             for (var index; index < chunkSize * iterations; index += chunkSize) {
                 
-                var products = this.getOneSliderProducts(0, index, chunkSize);
+                var products = this.getOneSliderProducts(sliderIndex, index, chunkSize);
                 
                 productGroups.push(products);
             }
