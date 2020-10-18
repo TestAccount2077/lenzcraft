@@ -5,20 +5,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 class BaseProduct(object):
     
-    @property
-    def brand_name(self):
-        return getattr(self.brand, 'name', '')
-        
-    @property
-    def color_name(self):
-        return getattr(self.color, 'name', '')
-        
     def as_dict(self, user=None, **kwargs):
-        
-        price = self.formatted_price
-        discounted_price = self.formatted_discounted_price
-        
-        DEFAULT_IMAGE_URL = 'https://lenzcraft.herokuapp.com/static/img/212X200/img2.jpg'
         
         data = {
             'id': self.id,
@@ -26,19 +13,15 @@ class BaseProduct(object):
             'type': self.get_type_display(),
             'category': self.get_category_display(),
             'model_number': self.model_number,
-            'image_url': self.image.url if self.image else self.image_url or DEFAULT_IMAGE_URL,
-            
+            'image_url': self.image_url,
             'price': self.price,
-            'discounted_price': self.discounted_price,
-            'formatted_price': discounted_price if self.discounted_price else price,
-            'formatted_discounted_price': price if self.discounted_price else discounted_price,
-            
+            'formatted_price': self.formatted_price,
             'published': self.published,
             'is_featured': self.is_featured,
-            'is_top_rated': self.is_top_rated,
+            'is_on_sale': True, # self.is_on_sale,
             
-            'brand': self.brand_name,
-            'color': self.color_name,
+            'brand': self.brand,
+            'color': self.color,
             'frame_type': self.get_frame_type_display(),
             
             'created_timestamp': self.created.timestamp(),
@@ -49,10 +32,7 @@ class BaseProduct(object):
             'in_stock': self.in_stock,
             'in_stock_label': self.in_stock_label,
             'qty': 0,
-            'total_cost': 0,
-            
-            'list_description': self.list_description,
-            'detail_description': self.detail_description
+            'total_cost': 0
         }
         
         if user and user.is_authenticated:
@@ -81,11 +61,6 @@ class BaseProduct(object):
     def formatted_price(self):
         
         return locale.currency(self.price, grouping=True)
-        
-    @property
-    def formatted_discounted_price(self):
-        
-        return locale.currency(self.discounted_price, grouping=True)
         
     @property
     def is_on_sale(self):

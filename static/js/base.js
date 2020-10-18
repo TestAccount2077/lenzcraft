@@ -12,19 +12,18 @@ var app = new Vue ({
         
         getFilterData(productAttributeName) {
             
-            var products = this.pageFilteredProducts,
-                array = products.map(product => product[productAttributeName]),
+            var array = this.products.map(product => product[productAttributeName]);
                 object = {};
             
             array.forEach((item, index) => {
                 if (item && !Object.keys(object).includes(item)) {
                     
-                    var _products = products.filter(product => product[productAttributeName] === item);
+                    var products = this.products.filter(product => product[productAttributeName] === item);
                     
                     object[item] = {
                         index,
                         name: item,
-                        count: _products.length
+                        count: products.length
                     };
                 }
             });
@@ -52,7 +51,7 @@ var app = new Vue ({
             });
         },
         
-        toggleProductInCart(product, action, qty, callback, silent) {
+        toggleProductInCart(product, callback) {
             
             $.ajax({
                 
@@ -60,23 +59,19 @@ var app = new Vue ({
                 type: 'POST',
                 
                 data: {
-                    productId: product.id,
-                    action,
-                    qty
+                    productId: product.id
                 },
                 
                 success (data) {
                     
-                    if (!silent) notify('success', data.message);
+                    notify('success', data.message);
                     
                     $.extend(product, data.product);
                     
                     if (callback) callback(product);
                 },
                 
-                error (error) {
-                    if (!silent) generateAlerts(error);
-                }
+                error: generateAlerts
             });
         },
         
@@ -118,10 +113,6 @@ var app = new Vue ({
             return this.products.filter(product => product.in_cart);
         },
         
-        wishlistedProducts() {
-            return this.products.filter(product => product.in_wishlist);
-        },
-        
         totalCartCost() {
             
             if (this.productsInCart.length) {
@@ -135,49 +126,13 @@ var app = new Vue ({
     })
 });
 
-$(document).on('click', '#confirm-signup', function (e) {
-    
-    var name = $('#signupName').val(),
-        email = $('#signupEmail').val(),
-        phone = $('#signupPhone').val(),
-        password = $('#signupPassword').val(),
-        password_confirmation = $('#signupConfirmPassword').val();
-        
-    if (!(name && email && phone && password && password_confirmation)) return;
-    
-    $.ajax({
-        
-        url: '/ajax/validate-signup/',
-        type: 'POST',
-        
-        data: {
-            name,
-            email,
-            phone,
-            password,
-            password_confirmation
-        },
-        
-        success (data) {
-            notify('success', 'Signed up successfully. Please click the link sent to your email to activate your account');
-        },
-        
-        error: generateAlerts
-    });
-    
-    e.preventDefault();
-    
-});
 
-$(document).on('click', '#confirm-login', function (e) {
+$(document).on('click', '#confirm-login', function () {
     
     var email = $('#signinEmail').val(),
         password = $('#signinPassword').val();
         
-    if (!(email && password)) return;
-    
     $.ajax({
-        
         url: '/ajax/validate-login/',
         type: 'POST',
         
@@ -191,9 +146,8 @@ $(document).on('click', '#confirm-login', function (e) {
         },
         
         error: generateAlerts
-    });
+    })
     
-    e.preventDefault();
 });
 
 function logout() {

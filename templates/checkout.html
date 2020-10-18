@@ -3,6 +3,20 @@
 
 {% block title %}Checkout{% endblock %}
 
+{% block js %}
+    <script type="text/javascript">
+        
+        // const PRODUCTS = JSON.parse('{{ products|safe|addslashes }}');
+        
+        var vueData = {
+            products: [] // PRODUCTS
+        };
+        
+    </script>
+    
+    <script type='text/javascript' src='{% static "js/checkout.js" %}'></script>
+{% endblock %}
+
 {% block main_content %}
     <!-- ========== MAIN CONTENT ========== -->
     <main id="content" role="main" class="checkout-page">

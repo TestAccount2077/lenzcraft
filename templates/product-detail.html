@@ -99,11 +99,11 @@
                                             <small class="fas fa-star"></small>
                                             <small class="far fa-star text-muted"></small>
                                         </div>
-                                        <span class="text-secondary font-size-13">([[ product.reviews.length ]] customer reviews)</span>
+                                        <span class="text-secondary font-size-13">(3 customer reviews)</span>
                                     </a>
                                 </div>
                                 <div class="d-md-flex align-items-center">
-                                    <div class="ml-md-3 text-gray-9 font-size-14">Availability: <span class="text-green font-weight-bold">[[ product.available_qty ]] in stock</span></div>
+                                    <div class="ml-md-3 text-gray-9 font-size-14">Availability: <span class="text-green font-weight-bold">26 in stock</span></div>
                                 </div>
                             </div>
                             <div class="flex-horizontal-center flex-wrap mb-4">
@@ -114,11 +114,10 @@
                             </div>
                             <div class="mb-2">
                                 <ul class="font-size-14 pl-3 ml-1 text-gray-110">
-                                    <li v-if='product.detail_description' v-for='line in product.detail_description.split("\n")' :key='line'>[[ line ]]</li>
-                                    <!-- <li>Lorem ipsum dolor sit amet</li>
                                     <li>Lorem ipsum dolor sit amet</li>
-                                    <li>Lorem ipsum dolor sit amet</li> -->
-                                    <li v-if='!product.detail_description'>No description</li>
+                                    <li>Lorem ipsum dolor sit amet</li>
+                                    <li>Lorem ipsum dolor sit amet</li>
+                                    <li>Lorem ipsum dolor sit amet</li>
                                 </ul>
                             </div>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
@@ -126,7 +125,7 @@
                             <div class="mb-4">
                                 <div class="d-flex align-items-baseline">
                                     <ins class="font-size-36 text-decoration-none">[[ product.formatted_price ]]</ins>
-                                    <del class="font-size-20 ml-2 text-gray-6" v-if='product.discounted_price'>[[ product.discounted_price ]]</del>
+                                    <del class="font-size-20 ml-2 text-gray-6">2,299.00</del>
                                 </div>
                             </div>
                             <div class="border-top border-bottom py-3 mb-4">
@@ -177,9 +176,9 @@
             <div class="mb-8">
                 <div class="position-relative position-md-static px-md-6">
                     <ul class="nav nav-classic nav-tab nav-tab-lg justify-content-xl-center flex-nowrap flex-xl-wrap overflow-auto overflow-xl-visble border-0 pb-1 pb-xl-0 mb-n1 mb-xl-0" id="pills-tab-8" role="tablist">
-                        <!-- <li class="nav-item flex-shrink-0 flex-xl-shrink-1 z-index-2">
+                        <li class="nav-item flex-shrink-0 flex-xl-shrink-1 z-index-2">
                             <a class="nav-link" id="Jpills-two-example1-tab" data-toggle="pill" href="#Jpills-two-example1" role="tab" aria-controls="Jpills-two-example1" aria-selected="false">Description</a>
-                        </li> -->
+                        </li>
                         <li class="nav-item flex-shrink-0 flex-xl-shrink-1 z-index-2">
                             <a class="nav-link" id="Jpills-three-example1-tab" data-toggle="pill" href="#Jpills-three-example1" role="tab" aria-controls="Jpills-three-example1" aria-selected="false">Specification</a>
                         </li>
@@ -191,7 +190,7 @@
                 <!-- Tab Content -->
                 <div class="borders-radius-17 border p-4 mt-4 mt-md-0 px-lg-10 py-lg-9">
                     <div class="tab-content" id="Jpills-tabContent">
-                        <!-- <div class="tab-pane fade active show" id="Jpills-two-example1" role="tabpanel" aria-labelledby="Jpills-two-example1-tab">
+                        <div class="tab-pane fade active show" id="Jpills-two-example1" role="tabpanel" aria-labelledby="Jpills-two-example1-tab">
                             <h3 class="font-size-24 mb-3">Perfectly Done</h3>
                             <p>Praesent ornare, ex a interdum consectetur, lectus diam sodales elit, vitae egestas est enim ornare nisl. Nullam in lectus nec sem semper viverra. In lobortis egestas massa. Nam nec massa nisi. Suspendisse potenti. Quisque suscipit vulputate dui quis volutpat. Ut id elit facilisis, feugiat est in, tempus lacus. Ut ultrices dictum metus, a ultricies ex vulputate ac. Ut id cursus tellus, non tempor quam. Morbi porta diam nisi, id finibus nunc tincidunt eu.</p>
                             <div class="row">
@@ -213,7 +212,7 @@
                                 <li class="nav-item text-gray-111 flex-shrink-0 flex-xl-shrink-1"><strong>Category:</strong> <a href="#" class="text-blue">Lenses</a></li>
                                 <li class="nav-item text-gray-111 mx-3 flex-shrink-0 flex-xl-shrink-1">/</li>
                             </ul>
-                        </div> -->
+                        </div>
                         <div class="tab-pane fade" id="Jpills-three-example1" role="tabpanel" aria-labelledby="Jpills-three-example1-tab">
                             <div class="mx-md-5 pt-1">
                                 <div class="table-responsive mb-4">

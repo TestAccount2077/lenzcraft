@@ -159,14 +159,12 @@ Vue.component('list-view-product-3', {
                         <div class="prodcut-price mb-2">
                             <div class="text-gray-100" v-text='product.formatted_price'></div>
                         </div>
-                        <div class="prodcut-add-cart" @click='$root.toggleProductInCart(product, "toggle")'>
+                        <div class="prodcut-add-cart" @click='$root.toggleProductInCart(product)'>
                             <a href='#' class="btn btn-sm btn-block btn-primary-dark btn-wide transition-3d-hover" v-text='product.in_cart ? "Remove from cart" : "Add to cart"'></a>
                         </div>
                     </div>
                     <div class="flex-horizontal-center justify-content-between justify-content-wd-center flex-wrap">
-                        <a href="#" @click='$root.toggleProductInWishlist(product)' class="text-gray-6 font-size-13 mx-wd-3">
-                            <i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist
-                        </a>
+                        <a href="#" @click='$root.toggleProductInWishlist(product)' class="text-gray-6 font-size-13 mx-wd-3"><i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist</a>
                     </div>
                 </div>
             </div>
@@ -227,36 +225,6 @@ Vue.component('list-view-product-4', {
     </li>`
 });
 
-Vue.component('homepage-long-product', {
-    
-    props: ['product'],
-    
-    template: `<li class="col-6 col-md-4 col-xl product-item">
-        <div class="product-item__outer h-100 w-100">
-            <div class="product-item__inner px-xl-4 p-3">
-                <div class="product-item__body pb-xl-2">
-                    <div class="mb-2">
-                        <a :href="product.url" class="font-size-12 text-gray-5" v-text='product.type'></a>
-                    </div>
-                    <h5 class="mb-1 product-item__title"><a :href="product.url" class="text-blue font-weight-bold" v-text='product.name'></a></h5>
-                    <div class="mb-2">
-                        <a :href="product.url" class="d-block text-center"><img class="img-fluid" :src="product.image_url" alt="Image Description"></a>
-                    </div>
-                    <div class="flex-center-between mb-1">
-                        <div class="prodcut-price">
-                            <div class="text-gray-100" v-text='product.formatted_price'></div>
-                        </div>
-                        <add-to-cart-btn :product='product'></add-to-cart-btn>
-                    </div>
-                </div>
-                <div class="product-item__footer">
-                    <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
-                </div>
-            </div>
-        </div>
-    </li>`
-});
-
 Vue.component('filter-item', {
     
     props: ['item', 'type', 'filters'],
@@ -276,7 +244,7 @@ Vue.component('add-to-cart-btn', {
     
     props: ['product'],
     
-    template: `<div class="d-none d-xl-block prodcut-add-cart" @click='$root.toggleProductInCart(product, "increment")'>
+    template: `<div class="d-none d-xl-block prodcut-add-cart" @click='$root.toggleProductInCart(product)'>
         <span class="btn-add-cart lenz-gradient transition-3d-hover pointer">
             <i class="ec ec-add-to-cart"></i>
         </span>
@@ -287,9 +255,9 @@ Vue.component('add-to-wishlist-btn', {
     
     props: ['product'],
     
-    template: `<div class="border-top pt-2 flex-center-between flex-wrap" @click='$root.toggleProductInWishlist(product, "increment")'>
+    template: `<div class="border-top pt-2 flex-center-between flex-wrap" @click='$root.toggleProductInWishlist(product)'>
         <span class="text-gray-6 font-size-13 pointer">
-            <i class="ec ec-favorites mr-1 font-size-15" :class='{"text-red": product.in_wishlist}'></i>
+            <i class="ec ec-favorites mr-1 font-size-15"></i>
             Wishlist
         </span>
     </div>`

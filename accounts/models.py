@@ -64,11 +64,7 @@ class User(AbstractUser):
     is_google_account = models.BooleanField(default=False)
     image_url = models.URLField(default='', blank=True)
     
-    # Facebook fields
-    is_facebook_account = models.BooleanField(default=False)
-    
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=50, default='', blank=True)
     username = None
     objects = UserManager()
     

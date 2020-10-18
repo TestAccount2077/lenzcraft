@@ -39,7 +39,7 @@
                     
                     product.qty--;
                 }
-
+                console.log(product.qty)
                 $.ajax({
                     
                     url: '/ajax/toggle-product-in-cart/',
@@ -107,18 +107,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="" v-for='product in productsInCart' :key='product.id'>
+                            <tr class="" v-for='product in products' :key='product.id'>
                                 <td class="text-center">
-                                    <a href="#" class="text-gray-32 font-size-26" @click='toggleProductInCart(product, "remove", null, removeProduct)'>×</a>
+                                    <a href="#" class="text-gray-32 font-size-26" @click='toggleProductInCart(product, removeProduct)'>×</a>
                                 </td>
                                 <td class="d-none d-md-table-cell">
-                                    <a :href="product.url">
+                                    <a href="#">
                                         <img class="img-fluid max-width-100 p-1 border border-color-1" :src="product.image_url" alt="Image Description">
                                     </a>
                                 </td>
 
                                 <td data-title="Product">
-                                    <a :href="product.url" class="text-black">[[ product.name ]]</a>
+                                    <a href="#" class="text-black">[[ product.name ]]</a>
                                 </td>
 
                                 <td data-title="Price">
@@ -134,10 +134,10 @@
                                                 <input class="js-result form-control h-auto border-0 rounded p-0 shadow-none" type="text" value="1" v-model='product.qty'>
                                             </div>
                                             <div class="col-auto pr-1">
-                                                <a class="js-minus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='toggleProductInCart(product, "decrement", null, null, true)'>
+                                                <a class="js-minus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='updateQty("decrement", product)'>
                                                     <small class="fas fa-minus btn-icon__inner"></small>
                                                 </a>
-                                                <a class="js-plus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='toggleProductInCart(product, "increment", null, null, true)'>
+                                                <a class="js-plus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='updateQty("increment", product)'>
                                                     <small class="fas fa-plus btn-icon__inner"></small>
                                                 </a>
                                             </div>
