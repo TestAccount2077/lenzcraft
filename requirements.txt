@@ -21,3 +21,4 @@ xlsxwriter==1.1.8
 requests-toolbelt==0.9.1
 asgiref==3.2.1
 whitenoise==5.2.0
+Pillow==8.0.0
