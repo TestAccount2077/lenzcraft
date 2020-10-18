@@ -36,7 +36,7 @@ class Product(BaseProduct, TimeStampedModel):
     list_description = models.TextField(default='', blank=True)
     detail_description = models.TextField(default='', blank=True)
     
-    model_number = models.CharField(max_length=300, unique=True, default='', blank=True)
+    model_number = models.CharField(max_length=300, default='', blank=True)
     frame_type = models.CharField(max_length=2, choices=FRAME_TYPES, default='', blank=True)
     lens_size = models.PositiveIntegerField(default=0, blank=True)
     
