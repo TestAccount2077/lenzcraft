@@ -34,6 +34,10 @@ var vueMethods = {
 
 var vueComputed = {
     
+    pageFilteredProducts() {
+        return this.products.filter(product => product.category === LIST_FILTER_CATEGORY);
+    },
+    
     searchedAndFilteredProducts () {
         
         var filters = this.filters;
@@ -41,7 +45,7 @@ var vueComputed = {
         var start = this.startIndex,
             end = start + 25;
         
-        var products = this.products.slice(start, end);
+        var products = this.pageFilteredProducts.slice(start, end);
         
         var products = products.filter(product => {
             return (
@@ -100,12 +104,12 @@ var vueComputed = {
         
         var endIndex = this.startIndex + 25;
         
-        if (endIndex > this.products.length) return this.products.length;
+        if (endIndex > this.pageFilteredProducts.length) return this.pageFilteredProducts.length;
         return endIndex;
     },
     
     pageCount() {
-        return Math.ceil(this.products.length / 25);
+        return Math.ceil(this.pageFilteredProducts.length / 25);
     }
     
 };

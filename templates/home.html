@@ -19,9 +19,7 @@
         },
         
         getOneSliderProducts(sliderIndex, startIndex, chunkSize) {
-            
             var products = this.getSliderProducts(sliderIndex);
-            
             return products.slice(startIndex, startIndex + chunkSize);
         },
         
@@ -31,9 +29,7 @@
                 index = 0
                 
             for (var index; index < chunkSize * iterations; index += chunkSize) {
-                
                 var products = this.getOneSliderProducts(sliderIndex, index, chunkSize);
-                
                 productGroups.push(products);
             }
             
@@ -47,10 +43,12 @@
             return this.products.filter(product => product.is_featured);
         },
         
+        topRatedProducts () {
+            return this.products.filter(product => product.is_top_rated);
+        },
+        
         firstTwoTypes() {
-            
             var types = new Set(this.products.map(product => product.type));
-            
             return Array.from(types).slice(0, 2);
         },
         
@@ -308,7 +306,7 @@
                             </div>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link js-animation-link" id="pills-two-example1-tab" data-toggle="pill" href="#pills-two-example1" role="tab" aria-controls="pills-two-example1" aria-selected="false"
                             data-target="#pills-two-example1"
                             data-link-group="groups"
@@ -317,7 +315,7 @@
                                 On Sale
                             </div>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link js-animation-link" id="pills-three-example1-tab" data-toggle="pill" href="#pills-three-example1" role="tab" aria-controls="pills-three-example1" aria-selected="false"
                             data-target="#pills-three-example1"
@@ -335,7 +333,8 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade pt-2 show active" id="pills-one-example1" role="tabpanel" aria-labelledby="pills-one-example1-tab" data-target-group="groups">
                     <ul class="row list-unstyled products-group no-gutters">
-                        <li class="col-6 col-md-4 col-xl product-item" v-for='product in featuredProducts.slice(0, 6)' :key='product.id'>
+                        <homepage-long-product v-for='product in featuredProducts.slice(0, 6)' :key='product.id' :product='product'></homepage-long-product>
+                        <!-- <li class="col-6 col-md-4 col-xl product-item" v-for='product in featuredProducts.slice(0, 6)' :key='product.id'>
                             <div class="product-item__outer h-100 w-100">
                                 <div class="product-item__inner px-xl-4 p-3">
                                     <div class="product-item__body pb-xl-2">
@@ -358,7 +357,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                         <!-- <li class="col-6 col-md-4 col-xl product-item">
                             <div class="product-item__outer h-100 w-100">
                                 <div class="product-item__inner px-xl-4 p-3">
@@ -493,7 +492,7 @@
                         </li> -->
                     </ul>
                 </div>
-                <div class="tab-pane fade pt-2" id="pills-two-example1" role="tabpanel" aria-labelledby="pills-two-example1-tab" data-target-group="groups">
+                <!-- <div class="tab-pane fade pt-2" id="pills-two-example1" role="tabpanel" aria-labelledby="pills-two-example1-tab" data-target-group="groups">
                     <ul class="row list-unstyled products-group no-gutters">
                         <li class="col-6 col-md-4 col-xl product-item">
                             <div class="product-item__outer h-100 w-100">
@@ -652,10 +651,11 @@
                             </div>
                         </li>
                     </ul>
-                </div>
+                </div> -->
                 <div class="tab-pane fade pt-2" id="pills-three-example1" role="tabpanel" aria-labelledby="pills-three-example1-tab" data-target-group="groups">
                     <ul class="row list-unstyled products-group no-gutters">
-                        <li class="col-6 col-md-4 col-xl product-item">
+                        <homepage-long-product v-for='product in topRatedProducts.slice(0, 6)' :key='product.id' :product='product'></homepage-long-product>
+                        <!-- <li class="col-6 col-md-4 col-xl product-item">
                             <div class="product-item__outer h-100 w-100">
                                 <div class="product-item__inner px-xl-4 p-3">
                                     <div class="product-item__body pb-xl-2">
@@ -810,7 +810,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>

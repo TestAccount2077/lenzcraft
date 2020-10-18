@@ -33,9 +33,10 @@ class Product(BaseProduct, TimeStampedModel):
     type = models.CharField(max_length=3, choices=TYPES, default='', blank=True)
     category = models.CharField(max_length=3, choices=CATEGORIES, default='', blank=True)
     
-    model_number = models.CharField(max_length=300, default='', blank=True)
-    brand = models.CharField(max_length=200, default='', blank=True)
-    color = models.CharField(max_length=100, default='', blank=True)
+    list_description = models.TextField(default='', blank=True)
+    detail_description = models.TextField(default='', blank=True)
+    
+    model_number = models.CharField(max_length=300, unique=True, default='', blank=True)
     frame_type = models.CharField(max_length=2, choices=FRAME_TYPES, default='', blank=True)
     lens_size = models.PositiveIntegerField(default=0, blank=True)
     
@@ -43,15 +44,40 @@ class Product(BaseProduct, TimeStampedModel):
     
     image_url = models.URLField(default='', blank=True)
     
+    image = models.ImageField(upload_to='product-images', null=True, blank=True)
+    
     price = models.FloatField(default=0.0, blank=True)
+    discounted_price = models.FloatField(default=0.0, blank=True)
     
     published = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
+    is_top_rated = models.BooleanField(default=False)
+    
+    brand = models.ForeignKey('main.Brand', null=True, blank=True, related_name='products', on_delete=models.SET_NULL)
+    color = models.ForeignKey('main.Color', null=True, blank=True, related_name='products', on_delete=models.SET_NULL)
     
     def __str__(self):
         
         return self.name
         
+        
+class Brand(TimeStampedModel):
+    
+    name = models.CharField(max_length=300)
+    
+    def __str__(self):
+        
+        return self.name
+        
+        
+class Color(TimeStampedModel):
+    
+    name = models.CharField(max_length=300)
+    
+    def __str__(self):
+        
+        return self.name
+
         
 class ProductReview(TimeStampedModel):
     
@@ -78,11 +104,19 @@ class Cart(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='cart')
     products = models.ManyToManyField(Product, blank=True, through='main.CartProduct')
     
+    def __str__(self):
+        
+        return f"{ self.user }'s cart ({ self.products.count() } products added)"
+    
     
 class Wishlist(models.Model):
     
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='wishlist')
     products = models.ManyToManyField(Product, blank=True, related_name='wishlists')
+    
+    def __str__(self):
+        
+        return f"{ self.user }'s wishlist ({ self.products.count() } products added)"
 
 
 class CartProduct(BaseCartProduct, models.Model):
@@ -91,3 +125,7 @@ class CartProduct(BaseCartProduct, models.Model):
     product = models.ForeignKey(Product, related_name='cart_products')
     
     qty = models.PositiveIntegerField('Quantity', default=0)
+    
+    def __str__(self):
+        
+        return f"{ self.cart.user }'s cart item (Product: { self.product }, Qty: { self.qty })"
