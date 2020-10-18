@@ -161,7 +161,7 @@ Vue.component('list-view-product-3', {
                         </div>
                         <div class="prodcut-add-cart" @click='$root.toggleProductInCart(product, "toggle")'>
                             <a href='#' class="btn btn-sm btn-block btn-primary-dark btn-wide transition-3d-hover" v-text='product.in_cart ? "Remove from cart" : "Add to cart"'></a>
-                        </div>
+                        </div> 
                     </div>
                     <div class="flex-horizontal-center justify-content-between justify-content-wd-center flex-wrap">
                         <add-to-wishlist-btn></add-to-wishlist-btn>
