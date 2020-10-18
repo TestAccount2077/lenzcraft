@@ -21,7 +21,7 @@ Vue.component('home-product', {
                     </div>
                     <div class="product-item__footer bg-white">
                         <div class="border-top pt-2 flex-center-between flex-wrap">
-                            <a href="#" @click='$root.toggleProductInWishlist(product)' class="text-gray-6 font-size-13"><i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist</a>
+                            <add-to-wishlist-btn></add-to-wishlist-btn>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@ Vue.component('list-view-product-1', {
                         <add-to-cart-btn :product='product'></add-to-cart-btn>
                     </div>
                     <div class="pt-2 flex-center-between flex-wrap">
-                        <a href="#" @click='$root.toggleProductInWishlist(product)' class="text-gray-6 font-size-13"><i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist</a>
+                        <add-to-wishlist-btn></add-to-wishlist-btn>
                     </div>
                 </div>
                 <div class="product-item__footer">
@@ -101,7 +101,7 @@ Vue.component('list-view-product-2', {
                         <add-to-cart-btn :product='product'></add-to-cart-btn>
                     </div>
                     <div class="pt-2 flex-center-between flex-wrap">
-                        <a :href="product.url" class="text-gray-6 font-size-13"><i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist</a>
+                        <add-to-wishlist-btn></add-to-wishlist-btn>
                     </div>
                 </div>
                 <div class="product-item__footer">
@@ -164,9 +164,7 @@ Vue.component('list-view-product-3', {
                         </div>
                     </div>
                     <div class="flex-horizontal-center justify-content-between justify-content-wd-center flex-wrap">
-                        <a href="#" @click='$root.toggleProductInWishlist(product)' class="text-gray-6 font-size-13 mx-wd-3">
-                            <i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist
-                        </a>
+                        <add-to-wishlist-btn></add-to-wishlist-btn>
                     </div>
                 </div>
             </div>
@@ -219,7 +217,7 @@ Vue.component('list-view-product-4', {
                         </div>
                     </div>
                     <div class="flex-horizontal-center justify-content-between justify-content-wd-center flex-wrap border-top pt-3">
-                        <a href="#" @click='$root.toggleProductInWishlist(product)' class="text-gray-6 font-size-13 mx-wd-3"><i class="ec ec-favorites mr-1 font-size-15"></i> Wishlist</a>
+                        <add-to-wishlist-btn></add-to-wishlist-btn>
                     </div>
                 </div>
             </div>
@@ -250,7 +248,9 @@ Vue.component('homepage-long-product', {
                     </div>
                 </div>
                 <div class="product-item__footer">
-                    <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
+                    <div class="border-top pt-2 flex-center-between flex-wrap">
+                        <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
+                    </div>
                 </div>
             </div>
         </div>
@@ -287,10 +287,10 @@ Vue.component('add-to-wishlist-btn', {
     
     props: ['product'],
     
-    template: `<div class="border-top pt-2 flex-center-between flex-wrap" @click='$root.toggleProductInWishlist(product, "increment")'>
-        <span class="text-gray-6 font-size-13 pointer">
+    template: `
+        <span class="text-gray-6 font-size-13 pointer" @click='$root.toggleProductInWishlist(product, "increment")'>
             <i class="ec ec-favorites mr-1 font-size-15" :class='{"text-red": product.in_wishlist}'></i>
             Wishlist
         </span>
-    </div>`
+    `
 });
