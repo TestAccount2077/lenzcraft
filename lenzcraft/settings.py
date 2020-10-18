@@ -139,8 +139,10 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
-# MEDIA_URL = '/%s/' % MEDIAFILES_LOCATION
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+MEDIA_URL = '/uploads/'
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1200
  
 DEBUG = True
 

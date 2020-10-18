@@ -33,7 +33,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
     def men_view(self, request, *args, **kwargs):
         
         context = {
-            'products': get_available_products(request.user, filter_kwargs=dict(category='MN'))
+            'products': get_available_products(request.user)
         }
         
         return Response(context, template_name='men.html')
@@ -41,7 +41,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
     def women_view(self, request, *args, **kwargs):
          
         context = {
-            'products': get_available_products(request.user, filter_kwargs=dict(category='WM'))
+            'products': get_available_products(request.user)
         }
         
         return Response(context, template_name='women.html')
@@ -49,7 +49,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
     def kids_view(self, request, *args, **kwargs):
         
         context = {
-           'products': get_available_products(request.user, filter_kwargs=dict(category='KD'))
+           'products': get_available_products(request.user)
         }
        
         return Response(context, template_name='kids.html')
@@ -57,9 +57,9 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
     def sunglasses_view(self, request, *args, **kwargs):
         
         context = {
-           'products': get_available_products(request.user, filter_kwargs=dict(type='SG'))
+           'products': get_available_products(request.user)
         }
-       
+        
         return Response(context, template_name='sunglasses.html')
     
     def product_detail(self, request, pk, *args, **kwargs):
@@ -92,27 +92,56 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
                 return JsonResponse({'error': 'Product not found'}, status=404)
             
             cart = user.cart
-            qty = data.get('qty')
-            
-            if qty:
-                qty = int(qty)
-            
+            action = data['action']
             cart_product = cart.cart_products.filter(product=product).first()
             
-            if qty == 0 or (cart_product and qty is None):
-                cart_product.delete()
-                message = 'Product removed from cart'
-                product = product.as_dict(user=user)
+            if action in ('increment', 'decrement'):
+                qty = abs(int(data.get('qty', 1) or 1))
+            
+            get_update_message = lambda: f'Quantity updated successfully. You now have { cart_product.qty } x { cart_product.product.name } in your cart'
+            
+            if action == 'increment':
+                if cart_product:
+                    cart_product.qty += qty
+                    cart_product.save()
+                    message = get_update_message()
+                    
+                else:
+                    cart_product = cart.cart_products.create(product=product, qty=qty)
+                    message = 'Product added successfully'
+                    
+            elif action == 'decrement':
+                if cart_product:
+                    if cart_product.qty - qty <= 0:
+                        return self._400('Value cannot be less than or equal to 0')
+                        
+                    cart_product.qty -= qty
+                    cart_product.save()
+                    message = get_update_message()
                 
-            else:
-                print(qty)
-                product = cart.cart_products.create(product=product, qty=qty or 1)
-                message = 'Product added to cart'
-                product = product.as_dict(user=user, include_product=True)
+                else:
+                    return self._404('Product not found in cart. Add to cart and try again')
+                    
+            elif action == 'toggle':
+                if cart_product:
+                    cart_product.delete()
+                    message = 'Product removed successfully'
+                    
+                else:
+                    cart_product = cart.cart_products.create(product=product, qty=1)
+                    message = 'Product added successfully'
                 
+            elif action == 'remove':
+                if cart_product:
+                    cart_product.delete()
+                    message = 'Product removed successfully'
+                    
+                else:
+                    return self._404('Product not found in cart')
+            
             return JsonResponse({
-                'message': message,
-                'product': product
+                'product': product.as_dict(user=user, include_product=True),
+                'message': message
             })
             
         return Response({}, template_name='index.html')
@@ -124,7 +153,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
         products = []
         
         if user.is_authenticated:
-            products = get_available_products(user, filter_kwargs=dict(wishlists=user.wishlist))
+            products = get_available_products(user)
         
         context = {
             'products': products
@@ -176,7 +205,9 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
     
     def checkout(self, request, *args, **kwargs):
         
-        context = {}
+        context = {
+           'products': get_available_products(request.user)
+        }
         
         return Response(context, template_name='checkout.html')
         
@@ -209,15 +240,25 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             return JsonResponse({})
     
     def faq(self, request, *args, **kwargs):
-    
-        return Response({}, template_name='faq.html')
+        
+        context = {
+           'products': get_available_products(request.user)
+        }
+        
+        return Response(context, template_name='faq.html')
     
     def about_us(self, request, *args, **kwargs):
-    
-        return Response({}, template_name='about.html')
+        
+        context = {
+           'products': get_available_products(request.user)
+        }
+        
+        return Response(context, template_name='about.html')
     
     def contact_us(self, request, *args, **kwargs):
-    
-        return Response({}, template_name='contact.html')
         
-    
+        context = {
+           'products': get_available_products(request.user)
+        }
+        
+        return Response(context, template_name='contact.html')

@@ -37,6 +37,13 @@
                     error: generateAlerts
                 });
             }
+        };
+        
+        var vueComputed = {
+            
+            searchedProducts() {
+                return this.wishlistedProducts.filter(product => product.name.toLowerCase().includes(this.productSearch.toLowerCase()));
+            }
         }
     </script>
 
@@ -81,18 +88,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="" v-for='product in products' :key='product.id'>
+                            <tr class="" v-for='product in searchedProducts' :key='product.id'>
                                 <td class="text-center">
-                                    <a href="#" class="text-gray-32 font-size-26" @click='removeProductFromWishlist(product)'>×</a>
+                                    <a :href="product.url" class="text-gray-32 font-size-26" @click='removeProductFromWishlist(product)'>×</a>
                                 </td>
                                 <td class="d-none d-md-table-cell">
-                                    <a href="#">
+                                    <a :href="product.url">
                                         <img class="img-fluid max-width-100 p-1 border border-color-1" :src="product.image_url" alt="Image Description">
                                     </a>
                                 </td>
 
                                 <td data-title="Product">
-                                    <a href="#" class="text-gray-90">[[ product.name ]]</a>
+                                    <a :href="product.url" class="text-black">[[ product.name ]]</a>
                                 </td>
 
                                 <td data-title="Unit Price">
@@ -107,7 +114,7 @@
 
                                 <td>
                                     <a href="#">
-                                        <button type="button" class="btn btn-soft-secondary mb-3 mb-md-0 font-weight-normal px-5 px-md-4 px-lg-5 w-100 w-md-auto" @click='toggleProductInCart(product)'>[[ product.in_cart ? 'Remove from cart'  : 'Add to Cart' ]]</button>
+                                        <button type="button" class="btn btn-soft-secondary mb-3 mb-md-0 font-weight-normal px-5 px-md-4 px-lg-5 w-100 w-md-auto" @click='toggleProductInCart(product, "toggle")'>[[ product.in_cart ? 'Remove from cart'  : 'Add to Cart' ]]</button>
                                     </a>
                                 </td>
                             </tr>
