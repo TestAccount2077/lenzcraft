@@ -1,16 +1,20 @@
 
+
+var pageInfo = JSON.parse(localStorage[LIST_FILTER_CATEGORY] || '{}'),
+    filters = pageInfo.filters || {
+        brands: [],
+        colors: [],
+        frameTypes: []
+    };
+
+
 var vueData = {
     
     products: PRODUCTS,
     
     productSearch: '',
     pageNum: 1,
-    
-    filters: {
-        brands: [],
-        colors: [],
-        frameTypes: []
-    },
+    filters: $.extend({}, filters),
     
     ordering: 'default'
 };
@@ -28,13 +32,15 @@ var vueMethods = {
         if (action === 'decrement' && pageNum - 1 > 0) {
             this.pageNum--;
         }
-        
     }
 };
 
 var vueComputed = {
     
     pageFilteredProducts() {
+        if (LIST_FILTER_CATEGORY === 'Sunglasses') {
+            return this.products.filter(product => product.type === LIST_FILTER_CATEGORY);
+        }
         return this.products.filter(product => product.category === LIST_FILTER_CATEGORY);
     },
     
@@ -45,7 +51,7 @@ var vueComputed = {
         var start = this.startIndex,
             end = start + 25;
         
-        var products = this.pageFilteredProducts.slice(start, end);
+        var products = this.pageFilteredProducts;
         
         var products = products.filter(product => {
             return (
@@ -80,6 +86,10 @@ var vueComputed = {
         return products;
     },
     
+    displayedProducts() {
+        return this.searchedAndFilteredProducts.slice(this.startIndex, this.endIndex);
+    },
+    
     brands () {
         return this.getFilterData('brand');
     },
@@ -97,19 +107,33 @@ var vueComputed = {
     },
     
     readableStartIndex() {
-        return this.startIndex + 1;
+        return this.searchedAndFilteredProducts.length ? this.startIndex + 1 : 0;
     },
     
     endIndex() {
         
         var endIndex = this.startIndex + 25;
         
-        if (endIndex > this.pageFilteredProducts.length) return this.pageFilteredProducts.length;
+        if (endIndex > this.searchedAndFilteredProducts.length) return this.searchedAndFilteredProducts.length;
         return endIndex;
     },
     
     pageCount() {
-        return Math.ceil(this.pageFilteredProducts.length / 25);
+        return Math.ceil(this.searchedAndFilteredProducts.length / 25);
     }
     
 };
+
+function updateFilters() {
+    setTimeout(() => {
+        var pageInfo = JSON.parse(localStorage[LIST_FILTER_CATEGORY] || '{}');
+        pageInfo.filters = this.filters;
+        localStorage.setItem(LIST_FILTER_CATEGORY, JSON.stringify(pageInfo));
+    }, 100);
+}
+
+var vueWatch = {
+    'filters.brands': updateFilters,
+    'filters.colors': updateFilters,
+    'filters.frameTypes': updateFilters,
+}

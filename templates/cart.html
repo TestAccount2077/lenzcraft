@@ -129,19 +129,7 @@
                                     <span class="sr-only">Quantity</span>
                                     <!-- Quantity -->
                                     <div class="border rounded-pill py-1 width-122 w-xl-80 px-3 border-color-1">
-                                        <div class="js-quantity row align-items-center">
-                                            <div class="col">
-                                                <input class="js-result form-control h-auto border-0 rounded p-0 shadow-none" type="text" value="1" v-model='product.qty'>
-                                            </div>
-                                            <div class="col-auto pr-1">
-                                                <a class="js-minus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='toggleProductInCart(product, "decrement", null, null, true)'>
-                                                    <small class="fas fa-minus btn-icon__inner"></small>
-                                                </a>
-                                                <a class="js-plus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='toggleProductInCart(product, "increment", null, null, true)'>
-                                                    <small class="fas fa-plus btn-icon__inner"></small>
-                                                </a>
-                                            </div>
-                                        </div>
+                                        <toggle-cart-qty-section :product='product'></toggle-cart-qty-section>
                                     </div>
                                     <!-- End Quantity -->
                                 </td>
@@ -168,7 +156,7 @@
                                                 <!-- End Apply coupon Form -->
                                             </div>
                                             <div class="d-md-flex">
-                                                <button type="button" class="btn btn-soft-secondary mb-3 mb-md-0 font-weight-normal px-5 px-md-4 px-lg-5 w-100 w-md-auto">Update cart</button>
+                                                <a href="/" class="btn btn-soft-secondary mb-3 mb-md-0 font-weight-normal px-5 px-md-4 px-lg-5 w-100 w-md-auto">Continue shopping</a>
                                                 <a href="/checkout/" class="btn lenz-gradient ml-md-2 px-5 px-md-4 px-lg-5 w-100 w-md-auto d-none d-md-inline-block">Proceed to checkout</a>
                                             </div>
                                         </div>

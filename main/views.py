@@ -71,6 +71,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
         
         context = {
             'product': product,
+            'products': get_available_products(request.user),
             'json_product': json.dumps(product.as_dict(request.user))
         }
         

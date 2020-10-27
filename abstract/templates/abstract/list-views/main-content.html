@@ -3,7 +3,7 @@
 <div class="tab-content" id="pills-tabContent">
     <div class="tab-pane fade pt-2 show active" id="pills-one-example1" role="tabpanel" aria-labelledby="pills-one-example1-tab" data-target-group="groups">
         <ul class="row list-unstyled products-group no-gutters">
-            <list-view-product-1 v-for='product in searchedAndFilteredProducts' :product='product' :key='product.id'></list-view-product-1>
+            <list-view-product-1 v-for='product in displayedProducts' :product='product' :key='product.id'></list-view-product-1>
             <!-- <li class="col-6 col-md-3 col-wd-2gdot4 product-item">
                 <div class="product-item__outer h-100">
                     <div class="product-item__inner px-xl-4 p-3">

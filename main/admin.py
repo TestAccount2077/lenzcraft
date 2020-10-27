@@ -28,3 +28,4 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ('name', 'price', 'discounted_price', 'type', 'brand', 'color', 'frame_type', 'category', 'is_featured', 'is_top_rated', 'image_url')
     list_filter = ('type', 'brand', 'frame_type', 'category', 'is_featured', 'is_top_rated')
     list_display_links = ('model_number',)
+    search_fields = ('name', 'model_number', 'brand__name', 'color__name', 'frame_type', 'category', 'type', 'list_description', 'detail_description')

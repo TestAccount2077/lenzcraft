@@ -4,9 +4,10 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block js %}
+{{ block.super }}
 <script type="text/javascript">
     
-    var PRODUCTS = [];
+    // var PRODUCTS = [];
     
     var vueData = {
         product: JSON.parse('{{ json_product|safe|addslashes }}')
@@ -107,7 +108,7 @@
                                 </div>
                             </div>
                             <div class="flex-horizontal-center flex-wrap mb-4">
-                                <add-to-wishlist-btn></add-to-wishlist-btn>
+                                <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
                             </div>
                             <div class="mb-2">
                                 <ul class="font-size-14 pl-3 ml-1 text-gray-110">
@@ -145,24 +146,14 @@
                                     <h6 class="font-size-14">Quantity</h6>
                                     <!-- Quantity -->
                                     <div class="border rounded-pill py-2 px-3 border-color-1">
-                                        <div class="js-quantity row align-items-center">
-                                            <div class="col">
-                                                <input class="js-result form-control h-auto border-0 rounded p-0 shadow-none" type="text" value="1">
-                                            </div>
-                                            <div class="col-auto pr-1">
-                                                <a class="js-minus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;">
-                                                    <small class="fas fa-minus btn-icon__inner"></small>
-                                                </a>
-                                                <a class="js-plus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;">
-                                                    <small class="fas fa-plus btn-icon__inner"></small>
-                                                </a>
-                                            </div>
-                                        </div>
+                                        <toggle-cart-qty-section :product='product'></toggle-cart-qty-section>
                                     </div>
                                     <!-- End Quantity -->
                                 </div>
                                 <div class="ml-md-3">
-                                    <a href="#" class="btn px-5 btn-primary-dark transition-3d-hover"><i class="ec ec-add-to-cart mr-2 font-size-20"></i> Add to Cart</a>
+                                    <span class="btn px-5 btn-primary-dark transition-3d-hover pointer" @click='$root.toggleProductInCart(product, "increment")'>
+                                        <i class="ec ec-add-to-cart mr-2 font-size-20"></i> Add to Cart
+                                    </span>
                                 </div>
                             </div>
                         </div>

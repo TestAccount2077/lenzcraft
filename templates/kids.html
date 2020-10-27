@@ -4,13 +4,12 @@
 {% block title %}Kids{% endblock %}
 
 {% block js %}
-    
+{{ block.super }}
+
     <script type='text/javascript'>
         const LIST_FILTER_CATEGORY = 'Kids';
     </script>
-    
-    {% include 'abstract/list-views/js.html' %}
-    
+        
     <script type="text/javascript" src='{% static "js/list-views.js" %}'></script>
     
 {% endblock %}

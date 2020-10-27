@@ -930,7 +930,7 @@
         
         {% block js %}
             <script type='text/javascript'>
-                var PRODUCTS = [];
+                var PRODUCTS = JSON.parse('{{ products|safe|addslashes }}' || '[]');
             </script>
         {% endblock %}
         

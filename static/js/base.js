@@ -132,7 +132,9 @@ var app = new Vue ({
             
             return 0.00;
         }
-    })
+    }),
+    
+    watch: $.extend(window.vueWatch, {})
 });
 
 $(document).on('click', '#confirm-signup', function (e) {

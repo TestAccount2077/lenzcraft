@@ -21,7 +21,7 @@ Vue.component('home-product', {
                     </div>
                     <div class="product-item__footer bg-white">
                         <div class="border-top pt-2 flex-center-between flex-wrap">
-                            <add-to-wishlist-btn></add-to-wishlist-btn>
+                            <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@ Vue.component('list-view-product-1', {
                         <add-to-cart-btn :product='product'></add-to-cart-btn>
                     </div>
                     <div class="pt-2 flex-center-between flex-wrap">
-                        <add-to-wishlist-btn></add-to-wishlist-btn>
+                        <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
                     </div>
                 </div>
                 <div class="product-item__footer">
@@ -101,7 +101,7 @@ Vue.component('list-view-product-2', {
                         <add-to-cart-btn :product='product'></add-to-cart-btn>
                     </div>
                     <div class="pt-2 flex-center-between flex-wrap">
-                        <add-to-wishlist-btn></add-to-wishlist-btn>
+                        <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
                     </div>
                 </div>
                 <div class="product-item__footer">
@@ -161,10 +161,10 @@ Vue.component('list-view-product-3', {
                         </div>
                         <div class="prodcut-add-cart" @click='$root.toggleProductInCart(product, "toggle")'>
                             <a href='#' class="btn btn-sm btn-block btn-primary-dark btn-wide transition-3d-hover" v-text='product.in_cart ? "Remove from cart" : "Add to cart"'></a>
-                        </div> 
+                        </div>
                     </div>
                     <div class="flex-horizontal-center justify-content-between justify-content-wd-center flex-wrap">
-                        <add-to-wishlist-btn></add-to-wishlist-btn>
+                        <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
                     </div>
                 </div>
             </div>
@@ -217,7 +217,7 @@ Vue.component('list-view-product-4', {
                         </div>
                     </div>
                     <div class="flex-horizontal-center justify-content-between justify-content-wd-center flex-wrap border-top pt-3">
-                        <add-to-wishlist-btn></add-to-wishlist-btn>
+                        <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
                     </div>
                 </div>
             </div>
@@ -293,4 +293,23 @@ Vue.component('add-to-wishlist-btn', {
             Wishlist
         </span>
     `
+});
+
+Vue.component('toggle-cart-qty-section', {
+    
+    props: ['product'],
+    
+    template: `<div class="js-quantity row align-items-center">
+        <div class="col">
+            <input class="js-result form-control h-auto border-0 rounded p-0 shadow-none" type="text" v-model='product.qty'>
+        </div>
+        <div class="col-auto pr-1">
+            <a class="js-minus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='$root.toggleProductInCart(product, "decrement", null, null, true)'>
+                <small class="fas fa-minus btn-icon__inner"></small>
+            </a>
+            <a class="js-plus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='$root.toggleProductInCart(product, "increment", null, null, true)'>
+                <small class="fas fa-plus btn-icon__inner"></small>
+            </a>
+        </div>
+    </div>`
 });
