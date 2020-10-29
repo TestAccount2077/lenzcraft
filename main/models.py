@@ -54,7 +54,7 @@ class Product(BaseProduct, TimeStampedModel):
     is_top_rated = models.BooleanField(default=False)
     
     brand = models.ForeignKey('main.Brand', null=True, blank=True, related_name='products', on_delete=models.SET_NULL)
-    color = models.ForeignKey('main.Color', null=True, blank=True, related_name='products', on_delete=models.SET_NULL)
+    colors = models.ManyToManyField('main.Color', blank=True, related_name='products')
     
     def __str__(self):
         
@@ -79,7 +79,7 @@ class Color(TimeStampedModel):
         return self.name
 
         
-class ProductReview(TimeStampedModel):
+class ProductReview(BaseProductReview, TimeStampedModel):
     
     name = models.CharField(max_length=300, default='', blank=True)
     email = models.EmailField()
@@ -96,7 +96,7 @@ class ProductReview(TimeStampedModel):
         
     def __str__(self):
         
-        return f'{ self.name } review ({ self.stars }/5)'
+        return f'{ self.name }\'s review ({ self.rating }/5)'
         
         
 class Cart(models.Model):

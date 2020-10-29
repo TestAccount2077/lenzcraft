@@ -5,7 +5,8 @@ var app = new Vue ({
     
     data: $.extend(window.vueData || {}, {
         productSearch: '',
-        products: PRODUCTS
+        products: PRODUCTS,
+        user: USER
     }),
     
     methods: $.extend(window.vueMethods || {}, {
@@ -13,8 +14,35 @@ var app = new Vue ({
         getFilterData(productAttributeName) {
             
             var products = this.pageFilteredProducts,
-                array = products.map(product => product[productAttributeName]),
                 object = {};
+            
+            if (productAttributeName === 'color') {
+                
+                var allColors = [];
+                
+                products.forEach(product => allColors.push(...product.colors));
+                console.log(allColors)
+                allColors = new Array(...new Set(allColors));
+                console.log(allColors)
+                array = products.map(product => product.colors);
+                
+                allColors.forEach((color, index) => {
+                    if (color && !Object.keys(object).includes(color)) {
+                        
+                        var _products = products.filter(product => product.colors.includes(color));
+                        
+                        object[color] = {
+                            index,
+                            name: color,
+                            count: _products.length
+                        };
+                    }
+                });
+                
+                return Object.values(object);
+            }
+            
+            var array = products.map(product => product[productAttributeName]);
             
             array.forEach((item, index) => {
                 if (item && !Object.keys(object).includes(item)) {
@@ -162,6 +190,7 @@ $(document).on('click', '#confirm-signup', function (e) {
         
         success (data) {
             notify('success', 'Signed up successfully. Please click the link sent to your email to activate your account');
+            location.reload();
         },
         
         error: generateAlerts

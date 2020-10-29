@@ -73,6 +73,8 @@ class LoginViewSet(CreateListRetrieveUpdateViewSet):
             user.set_password(password)
             user.save()
             
+            login(request, user)
+            
             return JsonResponse({})
             
     def validate_login(self, request, *args, **kwargs):

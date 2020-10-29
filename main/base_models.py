@@ -10,8 +10,9 @@ class BaseProduct(object):
         return getattr(self.brand, 'name', '')
         
     @property
-    def color_name(self):
-        return getattr(self.color, 'name', '')
+    def color_names(self):
+        
+        return [color.name for color in self.colors.all()]
         
     def as_dict(self, user=None, **kwargs):
         
@@ -38,7 +39,7 @@ class BaseProduct(object):
             'is_top_rated': self.is_top_rated,
             
             'brand': self.brand_name,
-            'color': self.color_name,
+            'colors': self.color_names,
             'frame_type': self.get_frame_type_display(),
             
             'created_timestamp': self.created.timestamp(),
@@ -75,6 +76,19 @@ class BaseProduct(object):
                 'in_wishlist': False
             })
             
+        if kwargs.get('include_review_details', False):
+            
+            review_count = self.reviews.count()
+            
+            for x in range(1, 6):
+                
+                rated_count = self.reviews.filter(rating=x).count()
+                
+                data[f'rated_{ x }'] = {
+                    'count': rated_count,
+                    'percentage': round((rated_count / (review_count or 1)) * 100, 2)
+                }
+            
         return data
     
     @property
@@ -95,7 +109,11 @@ class BaseProduct(object):
     @property
     def total_rating(self):
         
-        return 3
+        reviews = self.reviews.all()
+        
+        # perfect_rating = (len(reviews) or 1) * 5
+        
+        return round(sum(review.rating for review in reviews) / (len(reviews) or 1), 2)
     
     @property
     def in_stock(self):
@@ -130,3 +148,22 @@ class BaseCartProduct(object):
             data.update(product)
             
         return data
+
+
+class BaseProductReview(object):
+    
+    def as_dict(self):
+        
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+            'content': self.content,
+            'rating': self.rating,
+            'timestamp': self.formatted_created
+        }
+        
+    @property
+    def formatted_created(self):
+        
+        return self.created.strftime('%B %d, %Y')

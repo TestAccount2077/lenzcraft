@@ -69,6 +69,10 @@ contact_us = MainViewSet.as_view({
     'get': 'contact_us'
 })
 
+add_review = MainViewSet.as_view({
+    'post': 'add_review'
+})
+
 urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^men/$', men_view, name='men'),
@@ -89,4 +93,6 @@ urlpatterns = [
     url(r'ajax/toggle-product-in-wishlist/$', toggle_product_in_wishlist),
     url(r'ajax/toggle-product-in-cart/$', toggle_product_in_cart),
     url(r'ajax/place-order/$', place_order),
+    
+    url(r'^ajax/add-review/$', add_review),
 ]

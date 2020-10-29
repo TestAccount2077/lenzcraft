@@ -4,9 +4,8 @@
 {% block title %}Cart{% endblock %}
 
 {% block js %}
+{{ block.super }}
     <script type="text/javascript">
-        
-        const PRODUCTS = JSON.parse('{{ products|safe|addslashes }}');
         
         var vueData = {
             products: PRODUCTS,
@@ -61,8 +60,8 @@
         
         var vueComputed = {
             
-            totalCost() {
-                return this.totalCartCost + this.shippingCost;
+            totalCost() {console.log(this.totalCartCost)
+                return (Number.parseFloat(this.totalCartCost) + this.shippingCost).toFixed(2);
             }
         }
         
@@ -182,7 +181,7 @@
                                 <tr class="shipping">
                                     <th>Shipping</th>
                                     <td data-title="Shipping">
-                                        Flat Rate: <span class="amount">[[ shippingCost ]]</span>
+                                        Flat Rate: <span class="amount">[[ shippingCost == totalCost ? 0 : shippingCost ]]</span>
                                         <div class="mt-1">
                                             <a class="font-size-12 text-gray-90 text-decoration-on underline-on-hover font-weight-bold mb-3 d-inline-block" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                 Calculate Shipping
@@ -488,7 +487,7 @@
                                 </tr>
                                 <tr class="order-total">
                                     <th>Total</th>
-                                    <td data-title="Total"><strong><span class="amount">[[ totalCost ]]</span></strong></td>
+                                    <td data-title="Total"><strong><span class="amount">[[ shippingCost == totalCost ? 0 : totalCost ]]</span></strong></td>
                                 </tr>
                             </tbody>
                         </table>

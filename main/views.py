@@ -70,9 +70,9 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             return Response({}, template='404.html')
         
         context = {
-            'product': product,
-            'products': get_available_products(request.user),
-            'json_product': json.dumps(product.as_dict(request.user))
+            'productId': product.id,
+            'productName': product.name,
+            'products': get_available_products(request.user, is_detail_view=True, product_id=product.id),
         }
         
         return Response(context, template_name='product-detail.html')
@@ -263,3 +263,24 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
         }
         
         return Response(context, template_name='contact.html')
+        
+    def add_review(self, request, *args, **kwargs):
+        
+        if request.is_ajax():
+            
+            user = request.user
+            data = request.POST
+            
+            product = Product.objects.filter(id=data['productId']).first()
+            
+            if not product:
+                return JsonResponse({'error': 'Product not found'}, status=404)
+            
+            product.reviews.create(
+                name=data['name'],
+                email=data['email'],
+                content=data['content'],
+                rating=int(data['rating'])
+            )
+            
+            return JsonResponse({'product': product.as_dict(user, include_review_details=True)}, status=201)

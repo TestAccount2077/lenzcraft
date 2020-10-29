@@ -927,10 +927,12 @@
         </script>
         
         <script src="{% static 'js/iziToast.min.js' %}?v=0.0.1"></script>
+        <script src="{% static 'js/plugins.js' %}?v=0.0.1"></script>
         
         {% block js %}
             <script type='text/javascript'>
                 var PRODUCTS = JSON.parse('{{ products|safe|addslashes }}' || '[]');
+                const USER = JSON.parse("{{ user.as_json_dict|safe|addslashes|default:'{}' }}");
             </script>
         {% endblock %}
         

@@ -6,6 +6,8 @@ from django.apps import apps
 
 from main.models import *
 
+import json
+
 
 class UserManager(BaseUserManager):
 
@@ -141,6 +143,14 @@ class User(AbstractUser):
             self.status = 'S'
 
         self.save()
+        
+    def as_json_dict(self):
+         
+        return json.dumps({
+            'id': self.id,
+            'name': self.full_name,
+            'email': self.email
+        })
 
 
 @receiver(post_save, sender=User)

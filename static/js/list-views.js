@@ -54,9 +54,12 @@ var vueComputed = {
         var products = this.pageFilteredProducts;
         
         var products = products.filter(product => {
+            
+            var colorMatches = Boolean(product.colors.filter(color => filters.colors.includes(color)).length);
+            
             return (
                 (!filters.brands.length || filters.brands.includes(product.brand)) &&
-                (!filters.colors.length || filters.colors.includes(product.color)) &&
+                (!filters.colors.length || !product.colors.length || colorMatches) &&
                 (!filters.frameTypes.length || filters.frameTypes.includes(product.frame_type))
             );
         });
