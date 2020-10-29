@@ -4,13 +4,8 @@
 {% block title %}Home{% endblock %}
 
 {% block js %}
+{{ block.super }}
 <script type="text/javascript">
-    
-    const PRODUCTS = JSON.parse('{{ products|safe|addslashes }}');
-    
-    var vueData = {
-        products: PRODUCTS
-    };
     
     var vueMethods = {
         
