@@ -21,9 +21,7 @@ var app = new Vue ({
                 var allColors = [];
                 
                 products.forEach(product => allColors.push(...product.colors));
-                console.log(allColors)
                 allColors = new Array(...new Set(allColors));
-                console.log(allColors)
                 array = products.map(product => product.colors);
                 
                 allColors.forEach((color, index) => {
@@ -107,12 +105,35 @@ var app = new Vue ({
                     
                     if (!silent) notify('success', data.message);
                     
-                    if (!product.is_cart_product) product = that.cartProducts.filter(product => product.id == data.product.id)[0]
+                    if (!product.is_cart_product) product = that.cartProducts.filter(product => product.id == data.product.id)[0];
                     
-                    if (product) $.extend(product, data.product);
-                    else (that.products.push(data.product));
+                    if (['increment'].includes(action)) {
+                        if (product) $.extend(product, data.product);
+                        else (that.products.push(data.product));
+                    }
                     
-                    if (action === 'remove') {
+                    else if (action === 'toggle') {
+                        
+                        var p = that.nonCartProducts.filter(p => p.id == data.product.id)[0];
+                        
+                        if (p) {
+                            p.in_cart = !p.in_cart;
+                            p.qty = data.product.qty;
+                        }
+                        
+                        var cartProduct = that.cartProducts.filter(p => p.id == data.product.id)[0];
+                        
+                        if (cartProduct) {
+                            var index = that.products.indexOf(cartProduct);
+                                that.products.splice(index, 1);
+                        }
+                        
+                        else {
+                            that.products.push(data.product);
+                        }
+                    }
+                    
+                    else if (action === 'remove') {
                         var index = that.products.indexOf(product);
                         that.products.splice(index, 1);
                     }
