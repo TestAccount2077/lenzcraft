@@ -10,6 +10,12 @@ site.site_header = 'Lenzcraft Admin Panel'
 site.site_title = 'Lenzcraft Admin'
 site.index_title = 'Lenzcraft Admin'
 
+
+class PaginationModelAdmin(admin.ModelAdmin):
+    
+    list_per_page = 50
+    
+
 models = (
     Brand,
     Color,
@@ -21,11 +27,11 @@ models = (
 )
 
 for model in models:
-    admin.site.register(model)
+    admin.site.register(model, PaginationModelAdmin)
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(PaginationModelAdmin):
     
     list_display = ('name', 'price', 'discounted_price', 'type', 'model_number', 'brand', 'frame_type', 'category', 'is_featured', 'is_top_rated', 'image_url')
     list_editable = ('name', 'price', 'discounted_price', 'type', 'brand', 'frame_type', 'category', 'is_featured', 'is_top_rated', 'image_url')
