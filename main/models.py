@@ -5,6 +5,12 @@ from .base_models import *
 from abstract.models import *
 
 
+class UserDataApp(object):
+    
+    class Meta:
+        app_label = 'user_data'
+
+
 class Product(BaseProduct, TimeStampedModel):
     
     TYPES = (
@@ -43,8 +49,9 @@ class Product(BaseProduct, TimeStampedModel):
     available_qty = models.PositiveIntegerField('Available quantity', default=0, blank=True)
     
     image_url = models.URLField(default='', blank=True)
+    main_image = models.ImageField(upload_to='product-images', null=True, blank=True)
     
-    image = models.ImageField(upload_to='product-images', null=True, blank=True)
+    detail_images = models.ManyToManyField('main.Image', blank=True, related_name='products')
     
     price = models.FloatField(default=0.0, blank=True)
     discounted_price = models.FloatField(default=0.0, blank=True)
@@ -99,17 +106,17 @@ class ProductReview(BaseProductReview, TimeStampedModel):
         return f'{ self.name }\'s review ({ self.rating }/5)'
         
         
-class Cart(models.Model):
+class Cart(UserDataApp, models.Model):
     
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='cart')
-    products = models.ManyToManyField(Product, blank=True, through='main.CartProduct')
+    products = models.ManyToManyField(Product, blank=True, through='user_data.CartProduct')
     
     def __str__(self):
         
         return f"{ self.user }'s cart ({ self.products.count() } products added)"
     
     
-class Wishlist(models.Model):
+class Wishlist(UserDataApp, models.Model):
     
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='wishlist')
     products = models.ManyToManyField(Product, blank=True, related_name='wishlists')
@@ -119,13 +126,29 @@ class Wishlist(models.Model):
         return f"{ self.user }'s wishlist ({ self.products.count() } products added)"
 
 
-class CartProduct(BaseCartProduct, models.Model):
+class CartProduct(UserDataApp, BaseCartProduct, models.Model):
     
     cart = models.ForeignKey(Cart, related_name='cart_products')
     product = models.ForeignKey(Product, related_name='cart_products')
+    color = models.ForeignKey(Color, null=True, related_name='cart_products')
     
     qty = models.PositiveIntegerField('Quantity', default=0)
     
     def __str__(self):
         
         return f"{ self.cart.user }'s cart item (Product: { self.product }, Qty: { self.qty })"
+
+
+class Image(BaseImage, models.Model):
+    
+    name = models.CharField(max_length=300, default='', blank=True)
+    order = models.PositiveIntegerField(null=True, blank=True)
+    image = models.ImageField(upload_to='images')
+    
+    def __str__(self):
+        
+        return self.name or getattr(self.image, 'name', 'Unnamed image')
+        
+    class Meta:
+        
+        ordering = ('order',)

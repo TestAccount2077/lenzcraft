@@ -8,14 +8,13 @@
     <script type="text/javascript">
         
         var vueData = {
-            products: PRODUCTS,
             shippingCost: 300
         };
         
         var vueMethods = {
             
             getProductTotal(product) {
-                return (product.qty || 0) * product.price;
+                return (product.qty || 0) * product.billing_price;
             },
             
             updateQty(action, product) {
@@ -60,8 +59,8 @@
         
         var vueComputed = {
             
-            totalCost() {console.log(this.totalCartCost)
-                return (Number.parseFloat(this.totalCartCost) + this.shippingCost).toFixed(2);
+            totalCost() {
+                return this.totalCartCost + this.shippingCost;
             }
         }
         
@@ -106,7 +105,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="" v-for='product in productsInCart' :key='product.id'>
+                            <tr class="" v-for='product in cartProducts'>
                                 <td class="text-center">
                                     <a href="#" class="text-gray-32 font-size-26" @click='toggleProductInCart(product, "remove", null, removeProduct)'>×</a>
                                 </td>
@@ -117,7 +116,7 @@
                                 </td>
 
                                 <td data-title="Product">
-                                    <a :href="product.url" class="text-black">[[ product.name ]]</a>
+                                    <a :href="product.url" class="text-black">[[ product.name_with_color ]]</a>
                                 </td>
 
                                 <td data-title="Price">
@@ -128,7 +127,7 @@
                                     <span class="sr-only">Quantity</span>
                                     <!-- Quantity -->
                                     <div class="border rounded-pill py-1 width-122 w-xl-80 px-3 border-color-1">
-                                        <toggle-cart-qty-section :product='product'></toggle-cart-qty-section>
+                                        <toggle-cart-qty-section-1 :product='product'></toggle-cart-qty-section-1>
                                     </div>
                                     <!-- End Quantity -->
                                 </td>
@@ -156,7 +155,7 @@
                                             </div>
                                             <div class="d-md-flex">
                                                 <a href="/" class="btn btn-soft-secondary mb-3 mb-md-0 font-weight-normal px-5 px-md-4 px-lg-5 w-100 w-md-auto">Continue shopping</a>
-                                                <a href="/checkout/" class="btn lenz-gradient ml-md-2 px-5 px-md-4 px-lg-5 w-100 w-md-auto d-none d-md-inline-block">Proceed to checkout</a>
+                                                <a href="/checkout/" class="btn lenz-gradient ml-md-2 px-5 px-md-4 px-lg-5 w-100 w-md-auto d-none d-md-inline-block" v-if='productsInCart.length'>Proceed to checkout</a>
                                             </div>
                                         </div>
                                     </div>

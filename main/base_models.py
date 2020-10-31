@@ -14,6 +14,11 @@ class BaseProduct(object):
         
         return [color.name for color in self.colors.all()]
         
+    @property
+    def split_list_description(self):
+        
+        return self.list_description.split('\n') if self.list_description else []
+        
     def as_dict(self, user=None, **kwargs):
         
         price = self.formatted_price
@@ -22,15 +27,15 @@ class BaseProduct(object):
         DEFAULT_IMAGE_URL = 'https://lenzcraft.herokuapp.com/static/img/212X200/img2.jpg'
         
         data = {
-            'id': self.id,
             'name': self.name,
             'type': self.get_type_display(),
             'category': self.get_category_display(),
             'model_number': self.model_number,
-            'image_url': self.image.url if self.image else self.image_url or DEFAULT_IMAGE_URL,
-            
+            'image_url': self.main_image.url if self.main_image else self.image_url or DEFAULT_IMAGE_URL,
+            'detail_images': [image.as_dict() for image in self.detail_images.all()],
             'price': self.price,
             'discounted_price': self.discounted_price,
+            'billing_price': self.discounted_price if self.discounted_price else self.price,
             'formatted_price': discounted_price if self.discounted_price else price,
             'formatted_discounted_price': price if self.discounted_price else discounted_price,
             
@@ -49,25 +54,21 @@ class BaseProduct(object):
             'available_qty': self.available_qty,
             'in_stock': self.in_stock,
             'in_stock_label': self.in_stock_label,
-            'qty': 0,
-            'total_cost': 0,
             
             'list_description': self.list_description,
+            'split_list_description': self.split_list_description,
             'detail_description': self.detail_description
         }
         
+        keyword = 'product_id' if kwargs.get('as_extention', False) else 'id'
+        data[keyword] = self.id
+            
         if user and user.is_authenticated:
 
             data.update({
                 'in_cart': user.cart.cart_products.filter(product=self).exists(),
                 'in_wishlist': user.wishlist.products.filter(id=self.id).exists()
             })
-            
-            cart_product = user.cart.cart_products.filter(product=self).first()
-            
-            if cart_product:
-                data['qty'] = cart_product.qty
-                data['total_cost'] = cart_product.total_cost
         
         else:
             
@@ -135,15 +136,28 @@ class BaseCartProduct(object):
         
         return self.qty * self.product.price
     
+    @property
+    def name_with_color(self):
+        
+        name = self.product.name
+        
+        if self.color:
+            return f'{ name } ({ self.color.name })'
+        
+        return name
+        
     def as_dict(self, **kwargs):
         
         data = {
             'id': self.id,
-            'qty': self.qty
+            'qty': self.qty,
+            'name_with_color': self.name_with_color,
+            'is_cart_product': kwargs.get('is_cart_product', False)
         }
         
         if kwargs.get('include_product', False):
             
+            data['cart_product_id'] = self.id
             product = self.product.as_dict(**kwargs)
             data.update(product)
             
@@ -167,3 +181,14 @@ class BaseProductReview(object):
     def formatted_created(self):
         
         return self.created.strftime('%B %d, %Y')
+
+
+class BaseImage(object):
+    
+    def as_dict(self):
+        
+        return {
+            'id': self.id,
+            'name': getattr(self.image, 'name', 'Unnamed image'),
+            'url': getattr(self.image, 'url', '#')
+        }

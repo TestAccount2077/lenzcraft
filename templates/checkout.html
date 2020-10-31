@@ -3,6 +3,34 @@
 
 {% block title %}Checkout{% endblock %}
 
+{% block js %}
+{{ block.super }}
+
+<script type='text/javascript'>
+    
+    var vueData = {
+        shippingCost: 300
+    };
+    
+    var vueMethods = {
+        
+        getProductTotal(product) {
+            return (product.qty || 0) * product.billing_price;
+        },
+        
+    }
+    
+    var vueComputed = {
+        
+        totalCost() {
+            return this.totalCartCost + this.shippingCost;
+        }
+    }
+    
+</script>
+
+{% endblock %}
+
 {% block main_content %}
     <!-- ========== MAIN CONTENT ========== -->
     <main id="content" role="main" class="checkout-page">
@@ -13,7 +41,7 @@
                 <div class="my-md-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-3 flex-nowrap flex-xl-wrap overflow-auto overflow-xl-visble">
-                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="../index.html">Home</a></li>
+                            <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="/">Home</a></li>
                             <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1 active" aria-current="page">Checkout</li>
                         </ol>
                     </nav>
@@ -31,7 +59,7 @@
             <div id="shopCartAccordion" class="accordion rounded mb-5">
                 <!-- Card -->
                 <div class="card border-0">
-                    <div id="shopCartHeadingOne" class="alert alert-primary mb-0 text-white" role="alert">
+                    <div id="shopCartHeadingOne" class="alert alert-primary mb-0 text-white" role="alert" v-if='!Object.keys(user).length'>
                         Returning customer? <a href="#" class="alert-link text-white" data-toggle="collapse" data-target="#shopCartOne" aria-expanded="false" aria-controls="shopCartOne">Click here to login</a>
                     </div>
                     <div id="shopCartOne" class="collapse border border-top-0" aria-labelledby="shopCartHeadingOne" data-parent="#shopCartAccordion" style="">
@@ -147,27 +175,27 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="cart_item">
-                                                <td>Eyeglass&nbsp;<strong class="product-quantity">× 1</strong></td>
-                                                <td>1,100.00</td>
+                                            <tr class="cart_item" v-for='product in cartProducts'>
+                                                <td>[[ product.name_with_color ]] <strong class="product-quantity">× [[ product.qty ]]</strong></td>
+                                                <td>[[ getProductTotal(product)|currency ]]</td>
                                             </tr>
-                                            <tr class="cart_item">
+                                            <!-- <tr class="cart_item">
                                                 <td>Sunglass&nbsp;<strong class="product-quantity">× 1</strong></td>
                                                 <td>685.00</td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <th>Subtotal</th>
-                                                <td>1,785.00</td>
+                                                <td>[[ totalCartCost|currency ]]</td>
                                             </tr>
                                             <tr>
                                                 <th>Shipping</th>
-                                                <td>Flat rate 300.00</td>
+                                                <td>Flat rate [[ shippingCost|currency ]]</td>
                                             </tr>
                                             <tr>
                                                 <th>Total</th>
-                                                <td><strong>2,085.00</strong></td>
+                                                <td><strong>[[ totalCost|currency ]]</strong></td>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -309,7 +337,7 @@
                                             First name
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control" name="firstName" placeholder="Jack" aria-label="Jack" required="" data-msg="Please enter your frist name." data-error-class="u-has-error" data-success-class="u-has-success" autocomplete="off">
+                                        <input type="text" class="form-control" name="firstName" placeholder="Jack" aria-label="Jack" required="" data-msg="Please enter your frist name." data-error-class="u-has-error" data-success-class="u-has-success" autocomplete="off" :value='user.first_name'>
                                     </div>
                                     <!-- End Input -->
                                 </div>
@@ -321,7 +349,7 @@
                                             Last name
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control" name="lastName" placeholder="Wayley" aria-label="Wayley" required="" data-msg="Please enter your last name." data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <input type="text" class="form-control" name="lastName" placeholder="Wayley" aria-label="Wayley" required="" data-msg="Please enter your last name." data-error-class="u-has-error" data-success-class="u-has-success" :value='user.last_name'>
                                     </div>
                                     <!-- End Input -->
                                 </div>
@@ -447,7 +475,7 @@
                                             Email address
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <input type="email" class="form-control" name="emailAddress" placeholder="jackwayley@gmail.com" aria-label="jackwayley@gmail.com" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <input type="email" class="form-control" name="emailAddress" placeholder="jackwayley@gmail.com" aria-label="jackwayley@gmail.com" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success" :value='user.email'>
                                     </div>
                                     <!-- End Input -->
                                 </div>
@@ -458,7 +486,7 @@
                                         <label class="form-label">
                                             Phone
                                         </label>
-                                        <input type="text" class="form-control" placeholder="+1 (062) 109-9222" aria-label="+1 (062) 109-9222" data-msg="Please enter your last name." data-error-class="u-has-error" data-success-class="u-has-success">
+                                        <input type="text" class="form-control" placeholder="+1 (062) 109-9222" aria-label="+1 (062) 109-9222" data-msg="Please enter your last name." data-error-class="u-has-error" data-success-class="u-has-success" :value='user.phone'>
                                     </div>
                                     <!-- End Input -->
                                 </div>
@@ -471,7 +499,7 @@
                             <div id="shopCartAccordion2" class="accordion rounded mb-6">
                                 <!-- Card -->
                                 <div class="card border-0">
-                                    <div id="shopCartHeadingThree" class="custom-control custom-checkbox d-flex align-items-center">
+                                    <div id="shopCartHeadingThree" class="custom-control custom-checkbox d-flex align-items-center" v-if='!loggedIn'>
                                         <input type="checkbox" class="custom-control-input" id="createAnaccount" name="createAnaccount" >
                                         <label class="custom-control-label form-label" for="createAnaccount" data-toggle="collapse" data-target="#shopCartThree" aria-expanded="false" aria-controls="shopCartThree">
                                             Create an account?

@@ -58,7 +58,7 @@
             <div class="my-md-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-3 flex-nowrap flex-xl-wrap overflow-auto overflow-xl-visble">
-                        <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="../index.html">Home</a></li>
+                        <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1"><a href="/">Home</a></li>
                         <li class="breadcrumb-item flex-shrink-0 flex-xl-shrink-1 active" aria-current="page">Wishlist</li>
                     </ol>
                 </nav>
@@ -89,7 +89,7 @@
                         <tbody>
                             <tr class="" v-for='product in searchedProducts' :key='product.id'>
                                 <td class="text-center">
-                                    <a :href="product.url" class="text-gray-32 font-size-26" @click='removeProductFromWishlist(product)'>×</a>
+                                    <span class="text-gray-32 font-size-26 pointer" @click='toggleProductInWishlist(product)'>×</span>
                                 </td>
                                 <td class="d-none d-md-table-cell">
                                     <a :href="product.url">
@@ -113,7 +113,7 @@
 
                                 <td>
                                     <a href="#">
-                                        <button type="button" class="btn btn-soft-secondary mb-3 mb-md-0 font-weight-normal px-5 px-md-4 px-lg-5 w-100 w-md-auto" @click='toggleProductInCart(product, "toggle")'>[[ product.in_cart ? 'Remove from cart'  : 'Add to Cart' ]]</button>
+                                        <button type="button" class="btn btn-soft-secondary mb-3 mb-md-0 font-weight-normal px-5 px-md-4 px-lg-5 w-100 w-md-auto" @click='toggleProductInCart(product, "toggle")'>[[ product.in_cart ? 'Remove from cart' : 'Add to Cart' ]]</button>
                                     </a>
                                 </td>
                             </tr>

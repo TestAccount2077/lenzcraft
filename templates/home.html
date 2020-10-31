@@ -35,15 +35,15 @@
     var vueComputed = {
         
         featuredProducts () {
-            return this.products.filter(product => product.is_featured);
+            return this.nonCartProducts.filter(product => product.is_featured);
         },
         
         topRatedProducts () {
-            return this.products.filter(product => product.is_top_rated);
+            return this.nonCartProducts.filter(product => product.is_top_rated);
         },
         
         firstTwoTypes() {
-            var types = new Set(this.products.map(product => product.type));
+            var types = new Set(this.nonCartProducts.map(product => product.type));
             return Array.from(types).slice(0, 2);
         },
         

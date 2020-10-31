@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import *
+from user_data.models import *
 
 # Site info
 site = admin.site
@@ -12,7 +13,11 @@ site.index_title = 'Lenzcraft Admin'
 models = (
     Brand,
     Color,
-    ProductReview
+    ProductReview,
+    Image,
+    Cart,
+    Wishlist,
+    CartProduct
 )
 
 for model in models:

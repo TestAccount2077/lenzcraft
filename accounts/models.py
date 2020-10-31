@@ -34,11 +34,11 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     
     STATUSES = (
-        ('I', 'Inactive'),  # Signed up but haven't set up account
-        ('U', 'Unverifed'), # Set up account but haven't verified yet
-        ('A', 'Active'), # Regular functioning account status
-        ('S', 'Suspended'), # Suspended by an admin
-        ('D', 'Deleted') # Partially deleted
+        ('I', 'Inactive'),
+        ('U', 'Unverifed'),
+        ('A', 'Active'),
+        ('S', 'Suspended'),
+        ('D', 'Deleted')
     )
     
     id = models.AutoField(primary_key=True)
@@ -97,6 +97,7 @@ class User(AbstractUser):
             'id': self.id,
 
             'email': self.email,
+            'phone': self.phone,
             'first_name': self.first_name,
             'last_name': self.last_name,
             'full_name': self.full_name
@@ -147,9 +148,7 @@ class User(AbstractUser):
     def as_json_dict(self):
          
         return json.dumps({
-            'id': self.id,
-            'name': self.full_name,
-            'email': self.email
+            'name': self.full_name, **self.as_light_dict()
         })
 
 

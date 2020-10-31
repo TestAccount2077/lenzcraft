@@ -94,12 +94,34 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             
             cart = user.cart
             action = data['action']
-            cart_product = cart.cart_products.filter(product=product).first()
+            
+            cart_product_id = data.get('cartProductId')
+            cart_product = None
+            
+            if cart_product_id:
+                cart_product = cart.cart_products.filter(id=cart_product_id).first()
+            
+            if not cart_product:
+                
+                cart_products = cart.cart_products.filter(product=product)
+                color_name = data.get('colorName')
+                
+                if color_name:
+                    color = product.colors.filter(name__iexact=color_name).first()
+                    
+                else:
+                    color = product.colors.first()
+                
+                if color:
+                    cart_product = cart_products.filter(color=color).first()
+                
+                else:
+                    cart_product = cart_products.first()
             
             if action in ('increment', 'decrement'):
                 qty = abs(int(data.get('qty', 1) or 1))
             
-            get_update_message = lambda: f'Quantity updated successfully. You now have { cart_product.qty } x { cart_product.product.name } in your cart'
+            get_update_message = lambda: f'Quantity updated successfully. You now have { cart_product.qty } x { cart_product.name_with_color } in your cart'
             
             if action == 'increment':
                 if cart_product:
@@ -108,11 +130,12 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
                     message = get_update_message()
                     
                 else:
-                    cart_product = cart.cart_products.create(product=product, qty=qty)
+                    cart_product = cart.cart_products.create(product=product, color=color, qty=qty)
                     message = 'Product added successfully'
                     
             elif action == 'decrement':
                 if cart_product:
+                    print(cart_product.name_with_color, cart_product.qty)
                     if cart_product.qty - qty <= 0:
                         return self._400('Value cannot be less than or equal to 0')
                         
@@ -129,7 +152,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
                     message = 'Product removed successfully'
                     
                 else:
-                    cart_product = cart.cart_products.create(product=product, qty=1)
+                    cart_product = cart.cart_products.create(product=product, color=color, qty=1)
                     message = 'Product added successfully'
                 
             elif action == 'remove':
@@ -141,7 +164,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
                     return self._404('Product not found in cart')
             
             return JsonResponse({
-                'product': product.as_dict(user=user, include_product=True),
+                'product': cart_product.as_dict(user=user, include_product=True, is_cart_product=True),
                 'message': message
             })
             
@@ -170,9 +193,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             return redirect('main:home')
         
         context = {
-            'products': json.dumps([
-                product.as_dict(user=user, include_product=True) for product in user.cart.cart_products.all()
-            ])
+            'products': get_available_products(user)
         }
         
         return Response(context, template_name='cart.html')

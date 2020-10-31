@@ -12,7 +12,9 @@
     const PRODUCT_ID = {{ productId }};
     
     var vueData = {
-        reviewRating: 5
+        reviewRating: 5,
+        color: '',
+        qty: 0
     };
     
     var vueComputed = {
@@ -20,6 +22,11 @@
             return this.products.filter(product => product.id == PRODUCT_ID)[0];
         }
     };
+    
+    var vueCreated = function () {
+        this.color = this.product.colors[0] || '';
+        this.qty = this.product.available_qty ? 1 : 0;
+    }
     
 </script>
 
@@ -58,10 +65,10 @@
                             data-arrow-left-classes="fas fa-arrow-left u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-lg-2 ml-xl-4"
                             data-arrow-right-classes="fas fa-arrow-right u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-lg-2 mr-xl-4"
                             data-nav-for="#sliderSyncingThumb">
-                            <div class="js-slide">
-                                <img class="img-fluid" src="{% static 'img/specs/img.jpg' %}" alt="Image Description">
+                            <div class="js-slide" v-for='image in product.detail_images' :key='image.id'>
+                                <img class="img-fluid" :src="image.url" :alt="image.name">
                             </div>
-                            <div class="js-slide">
+                            <!-- <div class="js-slide">
                                 <img class="img-fluid" src="{% static 'img/212X200/img1.jpg' %}" alt="Image Description">
                             </div>
                             <div class="js-slide">
@@ -72,7 +79,7 @@
                             </div>
                             <div class="js-slide">
                                 <img class="img-fluid" src="{% static 'img/specs/img.jpg' %}" alt="Image Description">
-                            </div>
+                            </div> -->
                         </div>
 
                         <div id="sliderSyncingThumb" class="js-slick-carousel u-slick u-slick--slider-syncing u-slick--slider-syncing-size u-slick--gutters-1 u-slick--transform-off"
@@ -80,10 +87,10 @@
                             data-slides-show="5"
                             data-is-thumbs="true"
                             data-nav-for="#sliderSyncingNav">
-                            <div class="js-slide" style="cursor: pointer;">
-                                <img class="img-fluid" src="{% static 'img/specs/img.jpg' %}" alt="Image Description">
+                            <div class="js-slide" style="cursor: pointer;" v-for='image in product.detail_images' :key='image.id'>
+                                <img class="img-fluid" :src="image.url" :alt="image.name">
                             </div>
-                            <div class="js-slide" style="cursor: pointer;">
+                            <!-- <div class="js-slide" style="cursor: pointer;" v-for='image in product.detail_images' :key='image.id'>
                                 <img class="img-fluid" src="{% static 'img/212X200/img1.jpg' %}" alt="Image Description">
                             </div>
                             <div class="js-slide" style="cursor: pointer;">
@@ -94,7 +101,7 @@
                             </div>
                             <div class="js-slide" style="cursor: pointer;">
                                 <img class="img-fluid" src="{% static 'img/specs/img.jpg' %}" alt="Image Description">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-md-7 mb-md-6 mb-lg-0">
@@ -105,17 +112,17 @@
                                 <div class="mb-2">
                                     <a class="d-inline-flex align-items-center small font-size-15 text-lh-1" href="#">
                                         <div class="text-warning mr-2">
-                                            <small class="fas fa-star" v-for='x in 5' :key='x' :class='{"text-muted": x > product.total_rating}'></small>
-                                            <!-- <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="far fa-star text-muted"></small> -->
+                                            <rating-stars :total-rating='product.total_rating'></rating-stars>
                                         </div>
                                         <span class="text-secondary font-size-13">([[ product.reviews.length ]] customer reviews)</span>
                                     </a>
                                 </div>
                                 <div class="d-md-flex align-items-center">
-                                    <div class="ml-md-3 text-gray-9 font-size-14">Availability: <span class="text-green font-weight-bold">[[ product.available_qty ]] in stock</span></div>
+                                    <div class="ml-md-3 text-gray-9 font-size-14">Availability:
+                                        <span class="text-green font-weight-bold" :class='{"text-green": product.available_qty, "text-red": !product.available_qty}'>
+                                            [[ product.available_qty ? product.available_qty + ' in stock' : "Sold out" ]]
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex-horizontal-center flex-wrap mb-4">
@@ -143,7 +150,7 @@
                                     <h6 class="font-size-14 mb-0">Color</h6>
                                     <!-- Select -->
                                     <select class="js-select selectpicker dropdown-select ml-3"
-                                        data-style="btn-sm bg-white font-weight-normal py-2 border">
+                                        data-style="btn-sm bg-white font-weight-normal py-2 border" v-model='color'>
                                         <option v-for='(color, i) in product.colors' :key='color' :value="color" :selected='!i'>[[ color ]]</option>
                                         <!-- <option value="two">Red</option>
                                         <option value="three">Green</option>
@@ -157,14 +164,14 @@
                                     <h6 class="font-size-14">Quantity</h6>
                                     <!-- Quantity -->
                                     <div class="border rounded-pill py-2 px-3 border-color-1">
-                                        <toggle-cart-qty-section :product='product'></toggle-cart-qty-section>
+                                        <toggle-cart-qty-section-2 :product='product'></toggle-cart-qty-section-2>
                                     </div>
                                     <!-- End Quantity -->
                                 </div>
                                 <div class="ml-md-3">
-                                    <span class="btn px-5 btn-primary-dark transition-3d-hover pointer" @click='$root.toggleProductInCart(product, "increment")'>
-                                        <i class="ec ec-add-to-cart mr-2 font-size-20"></i> Add to Cart
-                                    </span>
+                                    <button class="btn px-5 btn-primary-dark transition-3d-hover pointer" @click='$root.toggleProductInCart(product, "increment", qty, null, false, color)' :disabled='!product.available_qty'>
+                                        <i class="ec ec-add-to-cart mr-2 font-size-20"></i> [[ product.available_qty ? "Add to Cart" : "Out of stock" ]]
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -366,10 +373,6 @@
                                                 <a href="javascript:;" class="d-block">
                                                     <div class="text-warning text-ls-n2 font-size-16">
                                                         <small class="fas fa-star" v-for='x in 5' :key='x' @click='reviewRating=x' :class='{"text-muted": x > reviewRating}'></small>
-                                                        <!-- <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small> -->
                                                     </div>
                                                 </a>
                                             </div>
@@ -423,10 +426,7 @@
                                 <!-- Review Rating -->
                                 <div class="d-flex justify-content-between align-items-center text-secondary font-size-1 mb-2">
                                     <div class="text-warning text-ls-n2 font-size-16" style="width: 80px;">
-                                        <small class="fas fa-star" v-for='star in review.rating'></small>
-                                        <!-- <small class="fas fa-star"></small>
-                                        <small class="fas fa-star"></small> -->
-                                        <small class="far fa-star text-muted" v-for='star in 5 - review.rating'></small>
+                                        <rating-stars :total-rating='review.rating'></rating-stars>
                                         <!-- <small class="far fa-star text-muted"></small> -->
                                     </div>
                                 </div>
@@ -442,44 +442,6 @@
                                 <!-- End Reviewer -->
                             </div>
                             <!-- End Review -->
-                            
-                            <!-- <div class="border-bottom border-color-1 pb-4 mb-4">
-                                <div class="d-flex justify-content-between align-items-center text-secondary font-size-1 mb-2">
-                                    <div class="text-warning text-ls-n2 font-size-16" style="width: 80px;">
-                                        <small class="fas fa-star"></small>
-                                        <small class="fas fa-star"></small>
-                                        <small class="fas fa-star"></small>
-                                        <small class="fas fa-star"></small>
-                                        <small class="fas fa-star"></small>
-                                    </div>
-                                </div>
-
-                                <p class="text-gray-90">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse eget facilisis odio. Duis sodales augue eu tincidunt faucibus. Etiam justo ligula, placerat ac augue id, volutpat porta dui.</p>
-
-                                <div class="mb-2">
-                                    <strong>Anna Kowalsky</strong>
-                                    <span class="font-size-13 text-gray-23">- April 3, 2019</span>
-                                </div>
-                            </div>
-                            
-                            <div class="pb-4">
-                                <div class="d-flex justify-content-between align-items-center text-secondary font-size-1 mb-2">
-                                    <div class="text-warning text-ls-n2 font-size-16" style="width: 80px;">
-                                        <small class="fas fa-star"></small>
-                                        <small class="fas fa-star"></small>
-                                        <small class="fas fa-star"></small>
-                                        <small class="fas fa-star"></small>
-                                        <small class="far fa-star text-muted"></small>
-                                    </div>
-                                </div>
-
-                                <p class="text-gray-90">Sed id tincidunt sapien. Pellentesque cursus accumsan tellus, nec ultricies nulla sollicitudin eget. Donec feugiat orci vestibulum porttitor sagittis.</p>
-
-                                <div class="mb-2">
-                                    <strong>Peter Wargner</strong>
-                                    <span class="font-size-13 text-gray-23">- April 3, 2019</span>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </div>

@@ -82,18 +82,16 @@ Vue.component('list-view-product-2', {
                     <div class="mb-3">
                         <a class="d-inline-flex align-items-center small font-size-14" href="#">
                             <div class="text-warning mr-2">
-                                <small class="fas fa-star" v-for='star in product.total_rating'></small>
-                                <small class="far fa-star text-muted" v-for='star in 5 - product.total_rating'></small>
+                                <rating-stars :total-rating='product.total_rating'></rating-stars>
                             </div>
                             <span class="text-secondary" v-text='"(" + product.reviews.length + ")"'></span>
                         </a>
                     </div>
                     <ul class="font-size-12 p-0 text-gray-110 mb-4">
-                        <li class="line-clamp-1 mb-1 list-bullet">Lorem ipsum dolor sit amet</li>
-                        <li class="line-clamp-1 mb-1 list-bullet">consectetur adipisicing elit, sed do eiusmod tempor incididunt.</li>
-                        <li class="line-clamp-1 mb-1 list-bullet">consectetur adipisicing elit, sed do eiusmod tempor incididunt</li>
+                        <li class="line-clamp-1 mb-1 list-bullet" v-for='line in product.split_list_description' v-text='line'></li>
+                        <li class="line-clamp-1 mb-1 list-bullet" v-if='!product.split_list_description.length'>No description</li>
                     </ul>
-                    <div class="text-gray-20 mb-2 font-size-12">SKU: FW511948218</div>
+                    <div class="text-gray-20 mb-2 font-size-12" v-text='"SKU: " + product.model_number'></div>
                     <div class="flex-center-between mb-1">
                         <div class="prodcut-price">
                             <div class="text-gray-100" v-text='product.formatted_price'></div>
@@ -141,17 +139,12 @@ Vue.component('list-view-product-3', {
                         <div class="mb-3 d-none d-md-block">
                             <a class="d-inline-flex align-items-center small font-size-14" href="#">
                                 <div class="text-warning mr-2">
-                                    <small class="fas fa-star" v-for='star in product.total_rating'></small>
-                                    <small class="far fa-star text-muted" v-for='star in 5 - product.total_rating'></small>
+                                    <rating-stars :total-rating='product.total_rating'></rating-stars>
                                 </div>
                                 <span class="text-secondary" v-text='"(" + product.reviews.length + ")"'></span>
                             </a>
                         </div>
-                        <ul class="font-size-12 p-0 text-gray-110 mb-4 d-none d-md-block">
-                            <li class="line-clamp-1 mb-1 list-bullet">Lorem ipsum dolor sit amet</li>
-                            <li class="line-clamp-1 mb-1 list-bullet">consectetur adipisicing elit, sed do eiusmod tempor incididunt.</li>
-                            <li class="line-clamp-1 mb-1 list-bullet">consectetur adipisicing elit, sed do eiusmod tempor incididunt</li>
-                        </ul>
+                        <description-list :lines='product.split_list_description'></description-list>
                     </div>
                 </div>
                 <div class="product-item__footer col-md-3 d-md-block">
@@ -191,16 +184,11 @@ Vue.component('list-view-product-4', {
                         <div class="prodcut-price d-md-none">
                             <div class="text-gray-100" v-text='product.formatted_price'></div>
                         </div>
-                        <ul class="font-size-12 p-0 text-gray-110 mb-4 d-none d-md-block">
-                            <li class="line-clamp-1 mb-1 list-bullet">Lorem ipsum dolor sit amet</li>
-                            <li class="line-clamp-1 mb-1 list-bullet">consectetur adipisicing elit, sed do eiusmod tempor incididunt.</li>
-                            <li class="line-clamp-1 mb-1 list-bullet">consectetur adipisicing elit, sed do eiusmod tempor incididunt</li>
-                        </ul>
+                        <description-list :lines='product.split_list_description'></description-list>
                         <div class="mb-3 d-none d-md-block">
                             <a class="d-inline-flex align-items-center small font-size-14" href="#">
                                 <div class="text-warning mr-2">
-                                    <small class="fas fa-star" v-for='star in product.total_rating'></small>
-                                    <small class="far fa-star text-muted" v-for='star in 5 - product.total_rating'></small>
+                                    <rating-stars :total-rating='product.total_rating'></rating-stars>
                                 </div>
                                 <span class="text-secondary" v-text='"(" + product.reviews.length + ")"'></span>
                             </a>
@@ -212,9 +200,7 @@ Vue.component('list-view-product-4', {
                         <div class="prodcut-price">
                             <div class="text-gray-100" v-text='product.formatted_price'></div>
                         </div>
-                        <div class="prodcut-add-cart">
-                            <a :href='product.url' class="btn-add-cart btn-primary transition-3d-hover"><i class="ec ec-add-to-cart"></i></a>
-                        </div>
+                        <add-to-cart-btn :product='product'></add-to-cart-btn>
                     </div>
                     <div class="flex-horizontal-center justify-content-between justify-content-wd-center flex-wrap border-top pt-3">
                         <add-to-wishlist-btn :product='product'></add-to-wishlist-btn>
@@ -295,7 +281,7 @@ Vue.component('add-to-wishlist-btn', {
     `
 });
 
-Vue.component('toggle-cart-qty-section', {
+Vue.component('toggle-cart-qty-section-1', {
     
     props: ['product'],
     
@@ -312,4 +298,67 @@ Vue.component('toggle-cart-qty-section', {
             </a>
         </div>
     </div>`
+});
+
+Vue.component('toggle-cart-qty-section-2', {
+    
+    props: ['product'],
+    
+    methods: {
+        increment() {
+            // if (this.$root.qty + 1 > this.product.available_qty) {
+            //     notify('error', 'Value must be less than available quantity');
+            //     return;
+            // }
+            if (!this.product.available_qty) return;
+            this.$root.qty++;
+        },
+        
+        decrement() {
+            if (!this.product.available_qty) return;
+            if (this.$root.qty - 1 < 0) {
+                notify('error', 'Value must be larger than 0');
+                return;
+            }
+            this.$root.qty--;
+        },
+        
+    },
+    template: `<div class="js-quantity row align-items-center">
+        <div class="col">
+            <input class="js-result form-control h-auto border-0 rounded p-0 shadow-none" type="text" v-model='$root.qty' :disabled='!product.available_qty'>
+        </div>
+        <div class="col-auto pr-1">
+            <a class="js-minus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='decrement'>
+                <small class="fas fa-minus btn-icon__inner"></small>
+            </a>
+            <a class="js-plus btn btn-icon btn-xs btn-outline-secondary rounded-circle border-0" href="javascript:;" @click='increment'>
+                <small class="fas fa-plus btn-icon__inner"></small>
+            </a>
+        </div>
+    </div>`
+});
+
+Vue.component('description-list', {
+    
+    props: {
+        lines: {
+            type: Array,
+            default: []
+        }
+    },
+    
+    template: `<ul class="font-size-12 p-0 text-gray-110 mb-4 d-none d-md-block">
+        <li class="line-clamp-1 mb-1 list-bullet" v-for='line in lines' v-text='line'></li>
+        <li class="line-clamp-1 mb-1 list-bullet" v-if='!lines.length'>No description</li>
+    </ul>`
+});
+
+Vue.component('rating-stars', {
+    
+    props: ['totalRating'],
+    
+    template: `<span>
+        <small class="fas fa-star" v-for='star in 5' :class='{"text-muted": star > totalRating}'></small>
+    </span>`
 });

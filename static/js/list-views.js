@@ -9,9 +9,7 @@ var pageInfo = JSON.parse(localStorage[LIST_FILTER_CATEGORY] || '{}'),
 
 
 var vueData = {
-    
-    products: PRODUCTS,
-    
+        
     productSearch: '',
     pageNum: 1,
     filters: $.extend({}, filters),
@@ -38,10 +36,13 @@ var vueMethods = {
 var vueComputed = {
     
     pageFilteredProducts() {
+        
+        var products = this.nonCartProducts;
+        
         if (LIST_FILTER_CATEGORY === 'Sunglasses') {
-            return this.products.filter(product => product.type === LIST_FILTER_CATEGORY);
+            return products.filter(product => product.type === LIST_FILTER_CATEGORY);
         }
-        return this.products.filter(product => product.category === LIST_FILTER_CATEGORY);
+        return products.filter(product => product.category === LIST_FILTER_CATEGORY);
     },
     
     searchedAndFilteredProducts () {
@@ -56,10 +57,10 @@ var vueComputed = {
         var products = products.filter(product => {
             
             var colorMatches = Boolean(product.colors.filter(color => filters.colors.includes(color)).length);
-            
+
             return (
                 (!filters.brands.length || filters.brands.includes(product.brand)) &&
-                (!filters.colors.length || !product.colors.length || colorMatches) &&
+                (!filters.colors.length || colorMatches) &&
                 (!filters.frameTypes.length || filters.frameTypes.includes(product.frame_type))
             );
         });
@@ -130,8 +131,8 @@ var vueComputed = {
 function updateFilters() {
     setTimeout(() => {
         var pageInfo = JSON.parse(localStorage[LIST_FILTER_CATEGORY] || '{}');
-        pageInfo.filters = this.filters;
-        localStorage.setItem(LIST_FILTER_CATEGORY, JSON.stringify(pageInfo));
+        pageInfo.filters = app.filters;
+        // localStorage.setItem(LIST_FILTER_CATEGORY, JSON.stringify(pageInfo));
     }, 100);
 }
 
