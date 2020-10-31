@@ -18,9 +18,10 @@ def get_available_products(user, as_json=True, **kwargs):
         ).exclude(**kwargs.get('exclude_kwargs', {}))
     ]
     
-    products.extend([
-        product.as_dict(user=user, include_product=True, is_cart_product=True) for product in user.cart.cart_products.all()
-    ])
+    if user.is_authenticated:
+        products.extend([
+            product.as_dict(user=user, include_product=True, is_cart_product=True) for product in user.cart.cart_products.all()
+        ])
     
     if as_json:
         products = json.dumps(products)
