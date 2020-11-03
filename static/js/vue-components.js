@@ -6,12 +6,12 @@ Vue.component('home-product', {
         <div class="product-item__outer h-100 w-100">
             <div class="product-item__inner p-md-3 row no-gutters bg-white max-width-334">
                 <div class="col col-lg-auto product-media-left">
-                    <a href="shop/single-product-fullwidth.html" class="max-width-120 d-block"><img class="img-fluid" :src="product.image_url" alt="Image Description"></a>
+                    <a :href='product.url' class="max-width-120 d-block"><img class="img-fluid" :src="product.image_url" alt="Image Description"></a>
                 </div>
                 <div class="col product-item__body pl-2 pl-lg-3 mr-xl-2 mr-wd-1 pr-3 pr-md-0 pt-1 pt-md-0">
                     <div class="mb-2">
                         <div class="mb-2"><a href="shop/product-categories-7-column-full-width.html" class="font-size-12 text-gray-5" v-text='product.type'></a></div>
-                        <h5 class="product-item__title"><a href="shop/single-product-fullwidth.html" class="text-blue font-weight-bold" v-text='product.name'></a></h5>
+                        <h5 class="product-item__title"><a :href='product.url' class="text-blue font-weight-bold" v-text='product.name'></a></h5>
                     </div>
                     <div class="flex-center-between mb-2">
                         <div class="prodcut-price">
