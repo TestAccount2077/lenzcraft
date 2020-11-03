@@ -9,6 +9,19 @@ class UserDataApp(object):
     
     class Meta:
         app_label = 'user_data'
+        
+        
+class SimpleModel(models.Model):
+    
+    name = models.CharField(max_length=300)
+    
+    class Meta:
+        
+        abstract = True
+    
+    def __str__(self):
+        
+        return self.name
 
 
 class Product(BaseProduct, TimeStampedModel):
@@ -36,14 +49,12 @@ class Product(BaseProduct, TimeStampedModel):
     }
     
     name = models.CharField(max_length=300, default='')
-    type = models.CharField(max_length=3, choices=TYPES, default='', blank=True)
     category = models.CharField(max_length=3, choices=CATEGORIES, default='', blank=True)
     
     list_description = models.TextField(default='', blank=True)
     detail_description = models.TextField(default='', blank=True)
     
     model_number = models.CharField(max_length=300, default='', blank=True)
-    frame_type = models.CharField(max_length=2, choices=FRAME_TYPES, default='', blank=True)
     lens_size = models.PositiveIntegerField(default=0, blank=True)
     
     available_qty = models.PositiveIntegerField('Available quantity', default=0, blank=True)
@@ -61,6 +72,8 @@ class Product(BaseProduct, TimeStampedModel):
     is_top_rated = models.BooleanField(default=False)
     
     brand = models.ForeignKey('main.Brand', null=True, blank=True, related_name='products', on_delete=models.SET_NULL)
+    frame_type = models.ForeignKey('main.FrameType', null=True, blank=True, related_name='products', on_delete=models.SET_NULL)
+    type = models.ForeignKey('main.ProductType', null=True, blank=True, related_name='products', on_delete=models.SET_NULL)
     colors = models.ManyToManyField('main.Color', blank=True, related_name='products')
     
     def __str__(self):
@@ -68,22 +81,24 @@ class Product(BaseProduct, TimeStampedModel):
         return self.name
         
         
-class Brand(TimeStampedModel):
+class Brand(TimeStampedModel, SimpleModel):
     
-    name = models.CharField(max_length=300)
-    
-    def __str__(self):
-        
-        return self.name
+    pass
         
         
-class Color(TimeStampedModel):
+class Color(TimeStampedModel, SimpleModel):
     
-    name = models.CharField(max_length=300)
-    
-    def __str__(self):
+    pass
         
-        return self.name
+        
+class FrameType(TimeStampedModel, SimpleModel):
+    
+    pass
+    
+
+class ProductType(TimeStampedModel, SimpleModel):
+    
+    pass
 
         
 class ProductReview(BaseProductReview, TimeStampedModel):

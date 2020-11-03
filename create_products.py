@@ -14,8 +14,8 @@ def create_products(count=100, delete_old=True):
     if delete_old:
         print('Deleted', Product.objects.all().delete()[0], 'old objects')
     
-    TYPES = tuple(dict(Product.TYPES).keys())
-    FRAME_TYPES = tuple(dict(Product.FRAME_TYPES).keys())
+    TYPES = tuple(dict(Product.TYPES).values())
+    FRAME_TYPES = tuple(dict(Product.FRAME_TYPES).values())
     CATEGORIES = Product.REVERSED_CATEGORIES
     
     HOST_URL = 'https://lenzcraft.herokuapp.com'
@@ -63,16 +63,17 @@ def create_products(count=100, delete_old=True):
             
             product = Product.objects.create(
                 name=f'{ category } product { x }',
-                type=random.choice(TYPES),
+                type=ProductType.objects.get_or_create(name=random.choice(TYPES))[0],
                 category=db_category,
-                color=color,
-                frame_type=random.choice(FRAME_TYPES),
+                frame_type=FrameType.objects.get_or_create(name=random.choice(FRAME_TYPES))[0],
                 model_number=random.randint(100000, 999999),
                 price=random.randrange(100, 3000, 50),
-                brand=f'{ category } brand { brand_num }',
+                brand=Brand.objects.get_or_create(name=f'{ category } brand { brand_num }')[0],
                 image_url=random.choice(IMAGE_URLS),
                 published=True
             )
+            
+            product.colors.add(Color.objects.get_or_create(name=color)[0])
             
             print(f'Created product named { product.name }')
     

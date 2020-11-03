@@ -257,11 +257,7 @@
                                             <a class="row align-items-center mx-gutters-2 font-size-1" href="javascript:;">
                                                 <div class="col-auto mb-2 mb-md-0">
                                                     <div class="text-warning text-ls-n2 font-size-16" style="width: 80px;">
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="far fa-star text-muted"></small>
+                                                        <small class="fas fa-star" v-for='x in 5'></small>
                                                     </div>
                                                 </div>
                                                 <div class="col-auto mb-2 mb-md-0">
@@ -278,11 +274,7 @@
                                             <a class="row align-items-center mx-gutters-2 font-size-1" href="javascript:;">
                                                 <div class="col-auto mb-2 mb-md-0">
                                                     <div class="text-warning text-ls-n2 font-size-16" style="width: 80px;">
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
+                                                        <small class="fas fa-star" v-for='x in 5' :class='{"text-muted": x > 4}'></small>
                                                     </div>
                                                 </div>
                                                 <div class="col-auto mb-2 mb-md-0">
@@ -299,11 +291,7 @@
                                             <a class="row align-items-center mx-gutters-2 font-size-1" href="javascript:;">
                                                 <div class="col-auto mb-2 mb-md-0">
                                                     <div class="text-warning text-ls-n2 font-size-16" style="width: 80px;">
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
+                                                        <small class="fas fa-star" v-for='x in 5' :class='{"text-muted": x > 3}'></small>
                                                     </div>
                                                 </div>
                                                 <div class="col-auto mb-2 mb-md-0">
@@ -320,11 +308,7 @@
                                             <a class="row align-items-center mx-gutters-2 font-size-1" href="javascript:;">
                                                 <div class="col-auto mb-2 mb-md-0">
                                                     <div class="text-warning text-ls-n2 font-size-16" style="width: 80px;">
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
+                                                        <small class="fas fa-star" v-for='x in 5' :class='{"text-muted": x > 2}'></small>
                                                     </div>
                                                 </div>
                                                 <div class="col-auto mb-2 mb-md-0">
@@ -341,11 +325,7 @@
                                             <a class="row align-items-center mx-gutters-2 font-size-1" href="javascript:;">
                                                 <div class="col-auto mb-2 mb-md-0">
                                                     <div class="text-warning text-ls-n2 font-size-16" style="width: 80px;">
-                                                        <small class="fas fa-star"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
-                                                        <small class="far fa-star text-muted"></small>
+                                                        <small class="fas fa-star" v-for='x in 5' :class='{"text-muted": x > 1}'></small>
                                                     </div>
                                                 </div>
                                                 <div class="col-auto mb-2 mb-md-0">

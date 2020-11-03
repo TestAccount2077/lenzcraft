@@ -67,7 +67,7 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
         product = Product.objects.filter(pk=pk).first()
         
         if not product:
-            return Response({}, template='404.html')
+            return Response({}, template_name='404.html')
         
         context = {
             'productId': product.id,
@@ -297,9 +297,14 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             if not product:
                 return JsonResponse({'error': 'Product not found'}, status=404)
             
+            email = data['email']
+            
+            if product.reviews.filter(email__iexact=email).exists():
+                return self._400('You already reviewed this product')
+            
             product.reviews.create(
                 name=data['name'],
-                email=data['email'],
+                email=email,
                 content=data['content'],
                 rating=int(data['rating'])
             )

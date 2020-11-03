@@ -10,6 +10,14 @@ class BaseProduct(object):
         return getattr(self.brand, 'name', '')
         
     @property
+    def frame_type_name(self):
+        return getattr(self.frame_type, 'name', '')
+        
+    @property
+    def type_name(self):
+        return getattr(self.type, 'name', '')
+        
+    @property
     def color_names(self):
         
         return [color.name for color in self.colors.all()]
@@ -28,7 +36,7 @@ class BaseProduct(object):
         
         data = {
             'name': self.name,
-            'type': self.get_type_display(),
+            'type': self.type_name,
             'category': self.get_category_display(),
             'model_number': self.model_number,
             'image_url': self.main_image.url if self.main_image else self.image_url or DEFAULT_IMAGE_URL,
@@ -45,7 +53,7 @@ class BaseProduct(object):
             
             'brand': self.brand_name,
             'colors': self.color_names,
-            'frame_type': self.get_frame_type_display(),
+            'frame_type': self.frame_type_name,
             
             'created_timestamp': self.created.timestamp(),
             'total_rating': self.total_rating,

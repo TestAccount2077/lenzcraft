@@ -23,7 +23,9 @@ models = (
     Image,
     Cart,
     Wishlist,
-    CartProduct
+    CartProduct,
+    FrameType,
+    ProductType
 )
 
 for model in models:
