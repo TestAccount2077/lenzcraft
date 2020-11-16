@@ -310,3 +310,8 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             )
             
             return JsonResponse({'product': product.as_dict(user, include_review_details=True)}, status=201)
+            
+            
+    def virtual_try_view(self, request, *args, **kwargs):
+        
+        return Response({}, template_name='virtual-try.html')

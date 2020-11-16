@@ -73,6 +73,10 @@ add_review = MainViewSet.as_view({
     'post': 'add_review'
 })
 
+virtual_try_view = MainViewSet.as_view({
+    'get': 'virtual_try_view'
+})
+
 urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^men/$', men_view, name='men'),
@@ -88,6 +92,7 @@ urlpatterns = [
     url(r'^contact-us/$', contact_us),
     
     url(r'^products/(?P<pk>\d+)/$', product_detail, name='product_detail'),
+    url(r'^products/(?P<pk>\d+)/try/$', virtual_try_view, name='virtual_try'),
     
     url(r'ajax/add-to-cart/$', add_to_cart),
     url(r'ajax/toggle-product-in-wishlist/$', toggle_product_in_wishlist),
