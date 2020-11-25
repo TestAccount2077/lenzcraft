@@ -3,6 +3,7 @@ from django.conf import settings
 
 from .base_models import *
 from abstract.models import *
+from .virtual_models import MODELS_FOR_DB
 
 
 class UserDataApp(object):
@@ -56,6 +57,7 @@ class Product(BaseProduct, TimeStampedModel):
     
     model_number = models.CharField(max_length=300, default='', blank=True)
     lens_size = models.PositiveIntegerField(default=0, blank=True)
+    virtual_model = models.CharField(max_length=200, choices=MODELS_FOR_DB, default='', blank=True)
     
     available_qty = models.PositiveIntegerField('Available quantity', default=0, blank=True)
     

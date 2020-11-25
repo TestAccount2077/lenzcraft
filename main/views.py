@@ -312,6 +312,11 @@ class MainViewSet(CreateListRetrieveUpdateViewSet):
             return JsonResponse({'product': product.as_dict(user, include_review_details=True)}, status=201)
             
             
-    def virtual_try_view(self, request, *args, **kwargs):
+    def virtual_try_view(self, request, pk, *args, **kwargs):
         
-        return Response({}, template_name='virtual-try.html')
+        product = Product.objects.filter(pk=pk).first()
+        
+        if not product:
+            return Response({}, template_name='404.html')
+        
+        return Response(dict(product=product), template_name='virtual-try.html')
