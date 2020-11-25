@@ -110,7 +110,7 @@ class ProductReview(BaseProductReview, TimeStampedModel):
     
     content = models.TextField(default='', blank=True)
     
-    product = models.ForeignKey(Product, null=True, blank=True, related_name='reviews')
+    product = models.ForeignKey(Product, null=True, blank=True, related_name='reviews', on_delete=models.CASCADE)
     
     class Meta(TimeStampedModel.Meta):
         
@@ -123,7 +123,7 @@ class ProductReview(BaseProductReview, TimeStampedModel):
         
 class Cart(UserDataApp, models.Model):
     
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='cart')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='cart', on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, blank=True, through='user_data.CartProduct')
     
     def __str__(self):
@@ -133,7 +133,7 @@ class Cart(UserDataApp, models.Model):
     
 class Wishlist(UserDataApp, models.Model):
     
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='wishlist')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='wishlist', on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, blank=True, related_name='wishlists')
     
     def __str__(self):
@@ -143,9 +143,9 @@ class Wishlist(UserDataApp, models.Model):
 
 class CartProduct(UserDataApp, BaseCartProduct, models.Model):
     
-    cart = models.ForeignKey(Cart, related_name='cart_products')
-    product = models.ForeignKey(Product, related_name='cart_products')
-    color = models.ForeignKey(Color, null=True, related_name='cart_products')
+    cart = models.ForeignKey(Cart, related_name='cart_products', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='cart_products', on_delete=models.CASCADE)
+    color = models.ForeignKey(Color, null=True, related_name='cart_products', on_delete=models.CASCADE)
     
     qty = models.PositiveIntegerField('Quantity', default=0)
     
